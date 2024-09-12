@@ -8,12 +8,27 @@
     ".NETCoreApp,Version=v8.0": {
       "antiMindblock.Desktop/1.0.0": {
         "dependencies": {
+          "Aspose.Imaging": "24.9.0",
           "Avalonia.Desktop": "11.1.0",
           "Avalonia.Diagnostics": "11.1.0",
+          "SkiaSharp": "2.88.8",
+          "System.Drawing.Common": "8.0.8",
           "antiMindblock": "1.0.0"
         },
         "runtime": {
           "antiMindblock.Desktop.dll": {}
+        }
+      },
+      "Aspose.Imaging/24.9.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "System.Text.Encoding.CodePages": "7.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/Aspose.Imaging.dll": {
+            "assemblyVersion": "24.9.0.0",
+            "fileVersion": "24.9.0.0"
+          }
         }
       },
       "Avalonia/11.1.0": {
@@ -340,6 +355,30 @@
           }
         }
       },
+      "Microsoft.Win32.SystemEvents/8.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Newtonsoft.Json/13.0.1": {
+        "runtime": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.1.25517"
+          }
+        }
+      },
       "SkiaSharp/2.88.8": {
         "dependencies": {
           "SkiaSharp.NativeAssets.Win32": "2.88.8",
@@ -408,6 +447,17 @@
           }
         }
       },
+      "System.Drawing.Common/8.0.8": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "8.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.824.36606"
+          }
+        }
+      },
       "System.IO.Pipelines/6.0.0": {
         "runtime": {
           "lib/net6.0/System.IO.Pipelines.dll": {
@@ -417,6 +467,7 @@
         }
       },
       "System.Numerics.Vectors/4.5.0": {},
+      "System.Text.Encoding.CodePages/7.0.0": {},
       "Tmds.DBus.Protocol/0.16.0": {
         "dependencies": {
           "System.IO.Pipelines": "6.0.0"
@@ -430,11 +481,14 @@
       },
       "antiMindblock/1.0.0": {
         "dependencies": {
+          "Aspose.Imaging": "24.9.0",
           "Avalonia": "11.1.0",
           "Avalonia.Diagnostics": "11.1.0",
           "Avalonia.Fonts.Inter": "11.1.0",
           "Avalonia.Themes.Fluent": "11.1.0",
-          "CommunityToolkit.Mvvm": "8.2.1"
+          "CommunityToolkit.Mvvm": "8.2.1",
+          "SkiaSharp": "2.88.8",
+          "System.Drawing.Common": "8.0.8"
         },
         "runtime": {
           "antiMindblock.dll": {}
@@ -447,6 +501,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Aspose.Imaging/24.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9l1ePnxL+NaezrgVuZQAmygaYoi4tL71NkR0cbE+TmMmyWdqJbiL8lgUVYsq2QNLwX1FPYyLRjLv3D+0eogCPg==",
+      "path": "aspose.imaging/24.9.0",
+      "hashPath": "aspose.imaging.24.9.0.nupkg.sha512"
     },
     "Avalonia/11.1.0": {
       "type": "package",
@@ -609,6 +670,20 @@
       "path": "microcom.runtime/0.11.0",
       "hashPath": "microcom.runtime.0.11.0.nupkg.sha512"
     },
+    "Microsoft.Win32.SystemEvents/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9opKRyOKMCi2xJ7Bj7kxtZ1r9vbzosMvRrdEhVhDz8j8MoBGgB+WmC94yH839NPH+BclAjtQ/pyagvi/8gDLkw==",
+      "path": "microsoft.win32.systemevents/8.0.0",
+      "hashPath": "microsoft.win32.systemevents.8.0.0.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ppPFpBcvxdsfUonNcvITKqLl3bqxWbDCZIzDWHzjpdAHRFfZe0Dw9HmA0+za13IdyrgJwpkDTDA9fHaxOrt20A==",
+      "path": "newtonsoft.json/13.0.1",
+      "hashPath": "newtonsoft.json.13.0.1.nupkg.sha512"
+    },
     "SkiaSharp/2.88.8": {
       "type": "package",
       "serviceable": true,
@@ -644,6 +719,13 @@
       "path": "skiasharp.nativeassets.win32/2.88.8",
       "hashPath": "skiasharp.nativeassets.win32.2.88.8.nupkg.sha512"
     },
+    "System.Drawing.Common/8.0.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-4ZM1wvLjz9nVVExsfPAaSl/qOvU+QNedJL5rQ+2Wbow+iGeyO0e7XN07707rMBgaffEeeLrCZBwC0oHUuvRdPw==",
+      "path": "system.drawing.common/8.0.8",
+      "hashPath": "system.drawing.common.8.0.8.nupkg.sha512"
+    },
     "System.IO.Pipelines/6.0.0": {
       "type": "package",
       "serviceable": true,
@@ -657,6 +739,13 @@
       "sha512": "sha512-QQTlPTl06J/iiDbJCiepZ4H//BVraReU4O4EoRw1U02H5TLUIT7xn3GnDp9AXPSlJUDyFs4uWjWafNX6WrAojQ==",
       "path": "system.numerics.vectors/4.5.0",
       "hashPath": "system.numerics.vectors.4.5.0.nupkg.sha512"
+    },
+    "System.Text.Encoding.CodePages/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LSyCblMpvOe0N3E+8e0skHcrIhgV2huaNcjUUEa8hRtgEAm36aGkRoC8Jxlb6Ra6GSfF29ftduPNywin8XolzQ==",
+      "path": "system.text.encoding.codepages/7.0.0",
+      "hashPath": "system.text.encoding.codepages.7.0.0.nupkg.sha512"
     },
     "Tmds.DBus.Protocol/0.16.0": {
       "type": "package",

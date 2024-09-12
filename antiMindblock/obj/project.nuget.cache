@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ja2PH9GbZRYdvwXWeZ8hAkruxogel88iCWMmIGaJzktPsmu3Tl9nz1hnX3/I3/hx/oyrV9iSL3l5cvz9ovBewQ==",
+  "dgSpecHash": "9XB/6MqEbrhD4vux2gfUHFww/xeoAaQV5RCS4lrdw4zD+sI8jH9x1zMyKRMr2alIxoKF8NyxiHbmgfXpe+QEww==",
   "success": true,
-  "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj",
+  "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
   "expectedPackageFiles": [
+    "/home/jakub/.nuget/packages/aspose.imaging/24.9.0/aspose.imaging.24.9.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia/11.1.0/avalonia.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.buildservices/0.0.29/avalonia.buildservices.0.0.29.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.controls.colorpicker/11.1.0/avalonia.controls.colorpicker.11.1.0.nupkg.sha512",
@@ -15,6 +16,13 @@
     "/home/jakub/.nuget/packages/avalonia.themes.simple/11.1.0/avalonia.themes.simple.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/communitytoolkit.mvvm/8.2.1/communitytoolkit.mvvm.8.2.1.nupkg.sha512",
     "/home/jakub/.nuget/packages/microcom.runtime/0.11.0/microcom.runtime.0.11.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/microsoft.win32.systemevents/8.0.0/microsoft.win32.systemevents.8.0.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
+    "/home/jakub/.nuget/packages/skiasharp/2.88.8/skiasharp.2.88.8.nupkg.sha512",
+    "/home/jakub/.nuget/packages/skiasharp.nativeassets.macos/2.88.8/skiasharp.nativeassets.macos.2.88.8.nupkg.sha512",
+    "/home/jakub/.nuget/packages/skiasharp.nativeassets.win32/2.88.8/skiasharp.nativeassets.win32.2.88.8.nupkg.sha512",
+    "/home/jakub/.nuget/packages/system.drawing.common/8.0.8/system.drawing.common.8.0.8.nupkg.sha512",
+    "/home/jakub/.nuget/packages/system.text.encoding.codepages/7.0.0/system.text.encoding.codepages.7.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.8/microsoft.aspnetcore.app.ref.8.0.8.nupkg.sha512"
   ],
   "logs": []

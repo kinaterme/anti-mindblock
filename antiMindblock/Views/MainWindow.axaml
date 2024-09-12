@@ -11,12 +11,15 @@
         <StackPanel>
                 <TabControl Margin="2">
                         <TabItem Header="Flipping">
-                                <Grid ColumnDefinitions="Auto, auto">
+                                <Grid ColumnDefinitions="Auto, auto, auto">
                                         <Button Grid.Column="0" Click="FlippingClickHandler">
                                                 Flip screen
                                         </Button>
                                         <Button Grid.Column="1" Click="UnFlippingClickHandler">
                                                 Unflip screen
+                                        </Button>
+                                        <Button Grid.Column="2" Click="TestClickHandler">
+                                                test
                                         </Button>
                                 </Grid>
                         </TabItem>

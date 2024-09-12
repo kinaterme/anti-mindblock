@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {}
+    "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {}
   },
   "projects": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {
+    "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
         "projectName": "antiMindblock.Desktop",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Desktop/obj/",
+        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj": {
-                "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj"
+              "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj": {
+                "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj"
               }
             }
           }
@@ -42,6 +42,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Aspose.Imaging": {
+              "target": "Package",
+              "version": "[24.9.0, )"
+            },
             "Avalonia.Desktop": {
               "target": "Package",
               "version": "[11.1.0, )"
@@ -49,6 +53,14 @@
             "Avalonia.Diagnostics": {
               "target": "Package",
               "version": "[11.1.0, )"
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[2.88.8, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.8, )"
             }
           },
           "imports": [
@@ -77,14 +89,14 @@
         }
       }
     },
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj": {
+    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
         "projectName": "antiMindblock",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/obj/",
+        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -111,6 +123,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Aspose.Imaging": {
+              "target": "Package",
+              "version": "[24.9.0, )"
+            },
             "Avalonia": {
               "target": "Package",
               "version": "[11.1.0, )"
@@ -130,6 +146,14 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.2.1, )"
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[2.88.8, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[8.0.8, )"
             }
           },
           "imports": [
