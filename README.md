@@ -3,7 +3,7 @@
 I remade Shikkesora's osu! Anti Mindblock tool for Linux.
 
 ## UPDATE
-I will be rewriting this tool in C# for Windows, Mac and Linux with support for both osu!stable and osu!lazer
+This tool is currently being rewritten in C# for Windows, Mac and Linux with support for both osu!stable and osu!lazer. You can find this rewrite in the csharp-rewrite branch.
 
 ## Known issues
 - All monitors flip on multi-monitor setups
