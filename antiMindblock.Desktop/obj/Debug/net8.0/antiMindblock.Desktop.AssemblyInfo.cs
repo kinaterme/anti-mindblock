@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("antiMindblock.Desktop")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aef15579ad891d907834d8661529dd8358e4988e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f99dc1f73756d6add65c55b6357fd1c7996e0735")]
 [assembly: System.Reflection.AssemblyProductAttribute("antiMindblock.Desktop")]
 [assembly: System.Reflection.AssemblyTitleAttribute("antiMindblock.Desktop")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
