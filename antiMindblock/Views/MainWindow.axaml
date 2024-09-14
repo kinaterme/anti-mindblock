@@ -26,40 +26,54 @@
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="400" />
                                         </Grid.ColumnDefinitions>
                                         <Button Grid.Column="0" Click="AutoDetectSkinInfo">
                                                 Detect skin
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="0" Click="Flipping_Click">
-                                                Flip screen
-                                        </Button>
-                                        <Button Grid.Row="2" Grid.Column="1" Click="UnFlipping_Click">
-                                                Unflip screen
-                                        </Button>
-                                        <Button Grid.Row="2" Grid.Column="2" Click="FlipTabletAreaStandalone">
-                                                Flip tablet
-                                        </Button>
-                                        <Button Grid.Row="2" Grid.Column="3" Click="UnflipTabletAreaStandalone">
-                                                Unflip tablet
-                                        </Button>
-                                        <TextBlock Grid.Row="1" Grid.Column="0" x:Name="AutoDetectSkinLabel" Text="No folder selected." Grid.ColumnSpan="9" />
-                                        <Button Grid.Row="2" Grid.Column="4" Click="DoAll_Click">
+                                        <TextBlock Grid.Row="1" Grid.Column="0" x:Name="AutoDetectSkinLabel" Text="If the detected skin doesn't match your in-game skin, use the manual tab." Grid.ColumnSpan="10" />
+                                        <Button Grid.Row="2" Grid.Column="0" Click="DoAll_Click">
                                                 Flip everything
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="5" Click="UndoAll_Click">
+                                        <Button Grid.Row="2" Grid.Column="1" Click="UndoAll_Click">
                                                 Unflip everything
                                         </Button>
                                 </Grid>
                         </TabItem>
                         <TabItem Header="Manual">
-                                <Grid ColumnDefinitions="Auto, auto, auto, auto, auto, auto, auto, auto, auto">
+                                <Grid>
+                                        <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="400" />
+                                        </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                                 <RowDefinition Height="40" />
                                                 <RowDefinition Height="100" />
                                         </Grid.RowDefinitions>
-                                        <Button Grid.Column="0" x:Name="FolderPickerButton" Content="Pick Folder" Click="FolderPickerButton_Click" />
-                                        <TextBlock Grid.Row="1" Grid.Column="0" x:Name="FolderPathTextBlock" Text="No folder selected." Grid.ColumnSpan="9" />
+                                        <Button Grid.Column="0" x:Name="FolderPickerButton" Content="Pick skin" Click="FolderPickerButton_Click" />
+                                        <TextBlock Grid.Row="1" x:Name="FolderPathTextBlock" Text="No skin selected." Grid.ColumnSpan="9" />
+                                        <Button Grid.Row="2" Grid.Column="0" Click="DoAllManual_Click">
+                                                Flip everything
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="1" Click="UndoAllManual_Click">
+                                                Unflip everything
+                                        </Button>
+                                </Grid>
+                        </TabItem>
+                        <TabItem Header="Misc">
+                                <Grid ColumnDefinitions="Auto, auto, auto, auto, auto, auto, auto, auto, 400">
+                                        <Grid.RowDefinitions>
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="100" />
+                                        </Grid.RowDefinitions>
+                                        <Button Grid.Row="0" Grid.Column="0" Content="Pick skin" Click="FolderPickerButton_Click" />
                                         <Button Grid.Row="2" Grid.Column="0" Click="Flipping_Click">
                                                 Flip screen
                                         </Button>
@@ -75,12 +89,7 @@
                                         <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletAreaStandalone">
                                                 Unflip tablet
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="5" Click="DoAllManual_Click">
-                                                Flip everything
-                                        </Button>
-                                        <Button Grid.Row="2" Grid.Column="6" Click="UndoAllManual_Click">
-                                                Unflip everything
-                                        </Button>
+                                        <TextBlock Grid.Row="1" x:Name="FolderPathTextBlockMisc" Text="No skin selected." Grid.ColumnSpan="9" />
                                 </Grid>
                         </TabItem>
                 </TabControl>

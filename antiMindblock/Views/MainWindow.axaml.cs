@@ -1232,10 +1232,12 @@ public partial class MainWindow : Window
             selectedFolderPath = result;
 
             FolderPathTextBlock.Text = $"Selected Folder: {selectedFolderPath}";
+            FolderPathTextBlockMisc.Text = $"Selected Folder: {selectedFolderPath}";
         }
         else
         {
-            FolderPathTextBlock.Text = "No folder selected.";
+            FolderPathTextBlock.Text = "No skin selected.";
+            FolderPathTextBlockMisc.Text = "No skin selected.";
         }
     }
 
