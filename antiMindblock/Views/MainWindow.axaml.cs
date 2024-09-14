@@ -14,12 +14,13 @@ namespace antiMindblock.Views;
 
 public partial class MainWindow : Window
 {
+    private string skinName;
     public MainWindow()
     {
         InitializeComponent();
     }
 
-    public void FlippingClickHandler(object sender, RoutedEventArgs args)
+    public void Flipping_Click(object sender, RoutedEventArgs args)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -90,7 +91,7 @@ public partial class MainWindow : Window
         }
     }
 
-    public void UnFlippingClickHandler(object sender, RoutedEventArgs args)
+    public void UnFlipping_Click(object sender, RoutedEventArgs args)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -153,8 +154,9 @@ public partial class MainWindow : Window
         }
     }
 
+
     // Experimental button for flipping currently selected skin's elements
-    public void TestClickHandler(object sender, RoutedEventArgs args)
+    public void Test_Click(object sender, RoutedEventArgs args)
     {
         try
         {
@@ -251,7 +253,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in TestClickHandler: {ex.Message}");
+            Console.WriteLine($"Error in Test_Click: {ex.Message}");
         }
     }
 
@@ -300,6 +302,68 @@ public partial class MainWindow : Window
             }
         }
         return null;
+    }
+
+    public void SkinFetcher()
+    {
+        try
+        {
+            Console.WriteLine("Button clicked - Starting process check");
+
+            // Target executable name (case-insensitive check)
+            string targetExecutable = "osu!.exe";
+
+            // Get all running processes
+            Process[] allProcesses = Process.GetProcesses();
+            Console.WriteLine($"Found {allProcesses.Length} processes");
+
+            foreach (Process proc in allProcesses)
+            {
+                try
+                {
+                    // Call method to get the process command line
+                    string cmdLine = GetProcessCommandLine(proc);
+
+                    // DEBUG OF PROCESSES: Console.WriteLine($"Process: {proc.ProcessName}, CmdLine: {cmdLine}");
+
+                    if (!string.IsNullOrEmpty(cmdLine) && cmdLine.ToLower().Contains(targetExecutable.ToLower()))
+                    {
+                        Console.WriteLine($"Found osu!.exe running under Wine with Process ID: {proc.Id}");
+
+                        // Extract the directory where osu!.exe is located
+                        string executablePath = ExtractExecutablePath(cmdLine);
+                        Console.WriteLine($"Executable Path: {executablePath}");
+
+                        if (Directory.Exists(executablePath))
+                        {
+                            // Search for the osu! cfg file in the executable's directory
+                            string configFilePattern = "osu!.*.cfg";
+                            string[] configFiles = Directory.GetFiles(executablePath, configFilePattern);
+
+                            if (configFiles.Length > 0)
+                            {
+                                string configFile = configFiles.FirstOrDefault();
+                                Console.WriteLine($"Config File Found: {configFile}");
+
+                                // Read the content of the config file
+                                string[] configLines = File.ReadAllLines(configFile);
+                                string skinName = GetSkinNameFromConfig(configLines);
+                                Console.WriteLine(skinName);
+                                AutoDetectSkinLabel.Text = $"Skin detected: {skinName}";
+                            }
+                        }
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
     }
 
     public void OpenAndEditSkin(string folderPath)
@@ -1030,18 +1094,18 @@ public partial class MainWindow : Window
         
     }
 
-    public void DoAllClickHandler(object sender, RoutedEventArgs args)
+    public void DoAll_Click(object sender, RoutedEventArgs args)
     {
         FlipTabletArea(sender, args, 180.0);
-        FlippingClickHandler(sender, args);
-        TestClickHandler(sender, args);
+        Flipping_Click(sender, args);
+        Test_Click(sender, args);
         FocusAndRefresh(sender, args);
     }
-    public void UndoAllClickHandler(object sender, RoutedEventArgs args)
+    public void UndoAll_Click(object sender, RoutedEventArgs args)
     {
         FlipTabletArea(sender, args, 0.0);
-        UnFlippingClickHandler(sender, args);
-        TestClickHandler(sender, args);
+        UnFlipping_Click(sender, args);
+        Test_Click(sender, args);
         FocusAndRefresh(sender, args);
     }
 
@@ -1150,5 +1214,772 @@ public partial class MainWindow : Window
     public void UnflipTabletAreaStandalone(object sender, RoutedEventArgs args)
     {
         FlipTabletArea(sender, args, 0.0);
+    }
+
+    private string selectedFolderPath;
+
+    private async void FolderPickerButton_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFolderDialog
+        {
+            Title = "Select a folder"
+        };
+
+        string result = await dialog.ShowAsync(this);
+
+        if (!string.IsNullOrEmpty(result))
+        {
+            selectedFolderPath = result;
+
+            FolderPathTextBlock.Text = $"Selected Folder: {selectedFolderPath}";
+        }
+        else
+        {
+            FolderPathTextBlock.Text = "No folder selected.";
+        }
+    }
+
+    public void FlipSkinManually(object sender, RoutedEventArgs args)
+    {
+        string quotedPath = $"\"{selectedFolderPath}\"";
+        try
+        {
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-1.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-1.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+        try
+        {
+            // Create the full path to the image
+            string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
+
+            using (var input = File.OpenRead(imagePath))
+            using (var originalBitmap = SKBitmap.Decode(input))
+            {
+                // Create a new bitmap with the same dimensions
+                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                // Rotation
+                using (var canvas = new SKCanvas(rotatedBitmap))
+                {
+                    canvas.Clear(SKColors.Transparent);
+                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                    canvas.RotateDegrees(180);
+                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                }
+
+                // Save the rotated image
+                string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
+                using (var output = File.OpenWrite(rotatedImagePath))
+                {
+                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                }
+
+                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error rotating image: {ex.Message}");
+        }
+
+    }
+
+    public void AutoDetectSkinInfo(object sender, RoutedEventArgs args)
+    {
+        SkinFetcher();
+        Console.WriteLine(skinName);
+    }
+
+    public void DoAllManual_Click(object sender, RoutedEventArgs args)
+    {
+        FlipTabletArea(sender, args, 180.0);
+        Flipping_Click(sender, args);
+        FlipSkinManually(sender, args);
+        FocusAndRefresh(sender, args);
+    }
+    public void UndoAllManual_Click(object sender, RoutedEventArgs args)
+    {
+        FlipTabletArea(sender, args, 0.0);
+        UnFlipping_Click(sender, args);
+        FlipSkinManually(sender, args);
+        FocusAndRefresh(sender, args);
     }
 }
