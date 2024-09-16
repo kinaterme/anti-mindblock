@@ -72,6 +72,7 @@
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/antiMindblock.Desktop.runtimeconfig.json
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/antiMindblock.Desktop.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/antiMindblock.Desktop.pdb
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Aspose.Imaging.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Avalonia.Base.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Avalonia.Controls.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Avalonia.DesignerSupport.dll
@@ -99,7 +100,12 @@
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/CommunityToolkit.Mvvm.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/HarfBuzzSharp.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/MicroCom.Runtime.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Microsoft.Win32.SystemEvents.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/OpenCvSharp.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/OpenCvSharp.Extensions.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/SkiaSharp.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/System.Drawing.Common.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/System.IO.Pipelines.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Tmds.DBus.Protocol.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win-arm64/native/av_libglesv2.dll
@@ -114,6 +120,7 @@
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win-arm64/native/libHarfBuzzSharp.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win-x64/native/libHarfBuzzSharp.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win-x86/native/libHarfBuzzSharp.dll
+/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/linux-arm/native/libSkiaSharp.so
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/linux-arm64/native/libSkiaSharp.so
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/linux-musl-x64/native/libSkiaSharp.so
@@ -137,8 +144,3 @@
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.pdb
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.genruntimeconfig.cache
 /home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/Debug/net8.0/ref/antiMindblock.Desktop.dll
-/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Aspose.Imaging.dll
-/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Newtonsoft.Json.dll
-/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/Microsoft.Win32.SystemEvents.dll
-/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/System.Drawing.Common.dll
-/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/bin/Debug/net8.0/runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll

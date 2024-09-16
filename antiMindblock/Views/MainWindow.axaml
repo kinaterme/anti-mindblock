@@ -89,7 +89,37 @@
                                         <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletAreaStandalone">
                                                 Unflip tablet
                                         </Button>
+                                        
                                         <TextBlock Grid.Row="1" x:Name="FolderPathTextBlockMisc" Text="No skin selected." Grid.ColumnSpan="9" />
+                                </Grid>
+                        </TabItem>
+                        <TabItem Header="lazer">
+                                <Grid ColumnDefinitions="Auto, auto, auto, auto, auto, auto, auto, auto, 400">
+                                        <Grid.RowDefinitions>
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="100" />
+                                        </Grid.RowDefinitions>
+                                        <Button Grid.Row="2" Grid.Column="5" Click="ExportLazerSkin">Export skin (click this if you changed skins or started new session)</Button>
+                                        <Button Grid.Row="2" Grid.Column="6" Click="EditLazerSkin">Edit exported skin</Button>
+                                        <Button Grid.Row="2" Grid.Column="7" Click="UndoEditsLazerSkin">Undo edits</Button>
+                                        <!-- <Button Grid.Row="0" Grid.Column="0" Content="Pick skin" Click="FolderPickerButton_Click" />
+                                        <Button Grid.Row="2" Grid.Column="0" Click="Flipping_Click">
+                                                Flip screen
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="1" Click="UnFlipping_Click">
+                                                Unflip screen
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="2" Click="FlipSkinManually">
+                                                Flip/unflip skin
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="3" Click="FlipTabletAreaStandalone">
+                                                Flip tablet
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletAreaStandalone">
+                                                Unflip tablet
+                                        </Button>
+                                        <Button Grid.Row="2" Grid.Column="5" Click="Testing_Click">test</Button>
+                                        <TextBlock Grid.Row="1" x:Name="FolderPathTextBlockMisc" Text="No skin selected." Grid.ColumnSpan="9" /> -->
                                 </Grid>
                         </TabItem>
                 </TabControl>

@@ -6,13 +6,18 @@ using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using SkiaSharp;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace antiMindblock.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Avalonia.Controls.Window
 {
     private string skinName;
     public MainWindow()
@@ -310,7 +315,6 @@ public partial class MainWindow : Window
         {
             Console.WriteLine("Button clicked - Starting process check");
 
-            // Target executable name (case-insensitive check)
             string targetExecutable = "osu!.exe";
 
             // Get all running processes
@@ -321,7 +325,6 @@ public partial class MainWindow : Window
             {
                 try
                 {
-                    // Call method to get the process command line
                     string cmdLine = GetProcessCommandLine(proc);
 
                     // DEBUG OF PROCESSES: Console.WriteLine($"Process: {proc.ProcessName}, CmdLine: {cmdLine}");
@@ -1983,5 +1986,1827 @@ public partial class MainWindow : Window
         UnFlipping_Click(sender, args);
         FlipSkinManually(sender, args);
         FocusAndRefresh(sender, args);
+    }
+    public void ExportLazerSkin(object sender, RoutedEventArgs args)
+    {
+        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string lazerExportDirectoryCleanup = Path.Combine(homeDirectory, ".local/share/osu/exports");
+        string quotedExportDirectoryCleanup = $"\"{lazerExportDirectoryCleanup}\"";
+        string everyFileInDirectory = Path.Combine(lazerExportDirectoryCleanup, "*");
+        RunShellCommand($"cd {quotedExportDirectoryCleanup} && rm -rf {everyFileInDirectory}");
+        Thread.Sleep(500);
+        RunShellCommand("wmctrl -R 'osu!'");
+        Task.Delay(2000).GetAwaiter().GetResult();
+        File.Delete("/tmp/screenshot.png");
+
+        RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
+
+        Task.Delay(1500).GetAwaiter().GetResult();
+
+        RunShellCommand("xdotool type 'export skin'");
+
+        var buttonLocation = FindImageOnScreen("button.png", 0.50);
+        if (buttonLocation != null)
+        {
+            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
+            Thread.Sleep(500);
+            DeleteLazerSkin(sender, args);
+        }
+        else
+        {
+            Console.WriteLine("Button not found!");
+        }
+    }
+
+    public void DeleteLazerSkin(object sender, RoutedEventArgs args)
+    {
+        RunShellCommand("wmctrl -R 'osu!'");
+        Task.Delay(2000).GetAwaiter().GetResult();
+        File.Delete("/tmp/screenshot.png");
+
+        RunShellCommand("xdotool keydown ctrl key 38 keyup ctrl");
+
+        Task.Delay(1500).GetAwaiter().GetResult();
+
+        RunShellCommand("xdotool type 'delete sel skin'");
+        Thread.Sleep(1000);
+
+        var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+        if (buttonLocation != null)
+        {
+            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
+        }
+        else
+        {
+            Console.WriteLine("Button not found!");
+        }
+
+        File.Delete("/tmp/screenshot.png");
+        Thread.Sleep(1000);
+
+        var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+        if (confirmationButtonLocation != null)
+        {
+            RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
+            Thread.Sleep(3000);
+            RunShellCommand($"xdotool mouseup 1");
+        }
+        else
+        {
+            Console.WriteLine("Button not found!");
+        }
+    }
+
+    static System.Drawing.Point? FindImageOnScreen(string imagePath, double confidence)
+    {
+        RunShellCommand("scrot /tmp/screenshot.png");
+
+        using var screenshot = new Mat("/tmp/screenshot.png", ImreadModes.Grayscale);
+        using var template = new Mat(imagePath, ImreadModes.Grayscale);
+
+        using var result = new Mat();
+        Cv2.MatchTemplate(screenshot, template, result, TemplateMatchModes.CCoeffNormed);
+
+        Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
+
+        if (maxVal >= confidence)
+        {
+            return new System.Drawing.Point(maxLoc.X + template.Width / 2, maxLoc.Y + template.Height / 2);
+        }
+
+        return null;
+    }
+
+    static void RunShellCommand(string command)
+    {
+        var processInfo = new ProcessStartInfo("bash", $"-c \"{command}\"")
+        {
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+        var process = Process.Start(processInfo);
+        process.WaitForExit();
+    }
+
+    public void EditLazerSkin(object sender, RoutedEventArgs args)
+    {
+        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string osuLazerExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
+        string osuLazerExportedSkinPath = Path.Combine(osuLazerExportDirectory, "*.osk");
+        string quotedOsuLazerExportedSkinPath = $"\"{osuLazerExportedSkinPath}\"";
+        string osuLazerExtractedSkinFolder = Path.Combine(osuLazerExportDirectory, "rotated");
+        string quotedOsuLazerExtractedSkinFolder = $"\"{osuLazerExtractedSkinFolder}\"";
+        string unzipCommand = $"unzip -o {quotedOsuLazerExportedSkinPath} -d {quotedOsuLazerExtractedSkinFolder}";
+        string zipCommand = $"cd {quotedOsuLazerExtractedSkinFolder} && zip -r ../rotated.osk *";
+        Console.WriteLine(quotedOsuLazerExportedSkinPath);
+
+        if (Directory.Exists(osuLazerExtractedSkinFolder))
+        {
+            RunShellCommand("wmctrl -R 'osu!'");
+            Task.Delay(2000).GetAwaiter().GetResult();
+            File.Delete("/tmp/screenshot.png");
+
+            RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
+
+            Task.Delay(1500).GetAwaiter().GetResult();
+
+            RunShellCommand("xdotool type 'delete sel skin'");
+            Thread.Sleep(1000);
+
+            var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+            if (buttonLocation != null)
+            {
+                RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
+            }
+            else
+            {
+                Console.WriteLine("Button not found!");
+            }
+
+            File.Delete("/tmp/screenshot.png");
+            Thread.Sleep(1000);
+
+            var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+            if (confirmationButtonLocation != null)
+            {
+                RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
+                Thread.Sleep(2500);
+                RunShellCommand($"xdotool mouseup 1");
+            }
+            else
+            {
+                Console.WriteLine("Button not found!");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Already exported");
+        }
+
+        if (Directory.Exists(osuLazerExportDirectory))
+        {            
+            var unzipProcessInfo = new ProcessStartInfo("bash", $"-c \"{unzipCommand}\"")
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            var unzipProcess = Process.Start(unzipProcessInfo);
+            unzipProcess.Start();
+            unzipProcess.WaitForExit();
+
+            Thread.Sleep(1100);
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            Thread.Sleep(1100);
+
+            var zipProcessInfo = new ProcessStartInfo("bash", $"-c \"{zipCommand}\"")
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            var zipProcess = Process.Start(zipProcessInfo);
+            zipProcess.Start();
+            zipProcess.WaitForExit();
+
+            Thread.Sleep(100);
+
+            string keyword = "osu";
+            string excludeKeyword = "appimagelauncher";
+            string parameter = Path.Combine(osuLazerExportDirectory, "rotated.osk");
+
+            var appImagePath = FindRunningAppImage(keyword, excludeKeyword);
+
+            if (appImagePath != null)
+            {
+                RunAppImage(appImagePath, parameter);
+            }
+            else
+            {
+                Console.WriteLine("No matching AppImage found.");
+            }
+            
+
+            static string FindRunningAppImage(string keyword, string excludeKeyword)
+            {
+                var processes = Process.GetProcesses();
+
+                foreach (var process in processes)
+                {
+                    try
+                    {
+                        var processName = process.MainModule.FileName;
+                        if (processName.Contains(keyword, StringComparison.OrdinalIgnoreCase) &&
+                            !processName.Contains(excludeKeyword, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return processName;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error accessing process: {ex.Message}");
+                    }
+                }
+
+                return null;
+            }
+
+            static void RunAppImage(string appImagePath, string parameter)
+            {
+                var processStartInfo = new ProcessStartInfo
+                {
+                    FileName = appImagePath,
+                    Arguments = parameter,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(processStartInfo))
+                {
+                    process.WaitForExit();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    Console.WriteLine($"Output: {output}");
+                    Console.WriteLine($"Error: {error}");
+                }
+            }
+        }
+    }
+
+    public void UndoEditsLazerSkin(object sender, RoutedEventArgs args)
+    {
+        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string osuLazerExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
+        string osuLazerExportedSkinPath = Path.Combine(osuLazerExportDirectory, "*.osk");
+        string quotedOsuLazerExportedSkinPath = $"\"{osuLazerExportedSkinPath}\"";
+        string osuLazerExtractedSkinFolder = Path.Combine(osuLazerExportDirectory, "rotated");
+        string quotedOsuLazerExtractedSkinFolder = $"\"{osuLazerExtractedSkinFolder}\"";
+        string unzipCommand = $"unzip -o {quotedOsuLazerExportedSkinPath} -d {quotedOsuLazerExtractedSkinFolder}";
+        string zipCommand = $"cd {quotedOsuLazerExtractedSkinFolder} && zip -r ../rotated.osk *";
+        Console.WriteLine(quotedOsuLazerExportedSkinPath);
+
+        RunShellCommand("wmctrl -R 'osu!'");
+        Task.Delay(2000).GetAwaiter().GetResult();
+        File.Delete("/tmp/screenshot.png");
+
+        RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
+
+        Task.Delay(1500).GetAwaiter().GetResult();
+
+        RunShellCommand("xdotool type 'delete sel skin'");
+        Thread.Sleep(1000);
+
+        var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+        if (buttonLocation != null)
+        {
+            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
+        }
+        else
+        {
+            Console.WriteLine("Button not found!");
+        }
+
+        File.Delete("/tmp/screenshot.png");
+        Thread.Sleep(1000);
+
+        var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+        if (confirmationButtonLocation != null)
+        {
+            RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
+            Thread.Sleep(3000);
+            RunShellCommand($"xdotool mouseup 1");
+        }
+        else
+        {
+            Console.WriteLine("Button not found!");
+        }
+
+        if (Directory.Exists(osuLazerExtractedSkinFolder))
+        {            
+            Thread.Sleep(1100);
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            try
+            {
+                // Create the full path to the image
+                string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
+
+                using (var input = File.OpenRead(imagePath))
+                using (var originalBitmap = SKBitmap.Decode(input))
+                {
+                    // Create a new bitmap with the same dimensions
+                    var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+                    // Rotation
+                    using (var canvas = new SKCanvas(rotatedBitmap))
+                    {
+                        canvas.Clear(SKColors.Transparent);
+                        canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
+                        canvas.RotateDegrees(180);
+                        canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
+                        canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
+                    }
+
+                    // Save the rotated image
+                    string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
+                    using (var output = File.OpenWrite(rotatedImagePath))
+                    {
+                        rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
+                    }
+
+                    Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error rotating image: {ex.Message}");
+            }
+
+            Thread.Sleep(1100);
+
+            var zipProcessInfo = new ProcessStartInfo("bash", $"-c \"{zipCommand}\"")
+            {
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+            var zipProcess = Process.Start(zipProcessInfo);
+            zipProcess.Start();
+            zipProcess.WaitForExit();
+
+            Thread.Sleep(100);
+
+            string keyword = "osu";
+            string excludeKeyword = "appimagelauncher";
+            string parameter = Path.Combine(osuLazerExportDirectory, "rotated.osk");
+
+            var appImagePath = FindRunningAppImage(keyword, excludeKeyword);
+
+            if (appImagePath != null)
+            {
+                RunAppImage(appImagePath, parameter);
+            }
+            else
+            {
+                Console.WriteLine("No matching AppImage found.");
+            }
+            
+
+            static string FindRunningAppImage(string keyword, string excludeKeyword)
+            {
+                var processes = Process.GetProcesses();
+
+                foreach (var process in processes)
+                {
+                    try
+                    {
+                        var processName = process.MainModule.FileName;
+                        if (processName.Contains(keyword, StringComparison.OrdinalIgnoreCase) &&
+                            !processName.Contains(excludeKeyword, StringComparison.OrdinalIgnoreCase))
+                        {
+                            return processName;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error accessing process: {ex.Message}");
+                    }
+                }
+
+                return null;
+            }
+
+            static void RunAppImage(string appImagePath, string parameter)
+            {
+                var processStartInfo = new ProcessStartInfo
+                {
+                    FileName = appImagePath,
+                    Arguments = parameter,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true
+                };
+
+                using (var process = Process.Start(processStartInfo))
+                {
+                    process.WaitForExit();
+
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+
+                    Console.WriteLine($"Output: {output}");
+                    Console.WriteLine($"Error: {error}");
+                }
+            }
+        }
     }
 }

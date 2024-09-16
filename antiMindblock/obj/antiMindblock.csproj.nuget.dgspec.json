@@ -62,6 +62,14 @@
               "target": "Package",
               "version": "[8.2.1, )"
             },
+            "OpenCvSharp4": {
+              "target": "Package",
+              "version": "[4.10.0.20240616, )"
+            },
+            "OpenCvSharp4.Extensions": {
+              "target": "Package",
+              "version": "[4.10.0.20240616, )"
+            },
             "SkiaSharp": {
               "target": "Package",
               "version": "[2.88.8, )"
