@@ -14,15 +14,134 @@ using OpenCvSharp;
 using OpenCvSharp.Extensions;
 using System.Drawing;
 using System.Drawing.Imaging;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 
 namespace antiMindblock.Views;
 
 public partial class MainWindow : Avalonia.Controls.Window
 {
+
+    public async Task ShowMessageBoxAsync(string program)
+    {
+        var box = MessageBoxManager
+                    .GetMessageBoxStandard("Caution", $"{program} is not installed, this program will not work unless you install it.",
+                        ButtonEnum.Ok);
+
+                var result = await box.ShowAsync();
+    }
+
     private string skinName;
     public MainWindow()
     {
         InitializeComponent();
+
+        var xdotoolcheck = new ProcessStartInfo
+        {
+            FileName = "bash",
+            Arguments = "-c \"xdotool\"",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        var scrotcheck = new ProcessStartInfo
+        {
+            FileName = "bash",
+            Arguments = "-c \"scrot --help\"",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        var wmctrlcheck = new ProcessStartInfo
+        {
+            FileName = "bash",
+            Arguments = "-c \"wmctrl -m\"",
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+
+        using (var process = new Process { StartInfo = xdotoolcheck })
+        {
+            process.Start();
+
+            // Read the output and error streams
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
+            process.WaitForExit();
+
+            // Check if there is an error output
+            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: xdotool:"))
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("xdotool");
+            }
+            else if (!string.IsNullOrWhiteSpace(output))
+            {
+                Console.WriteLine("xdotool check: Installed");
+            }
+            else
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("xdotool");
+            }
+        }
+
+        using (var process = new Process { StartInfo = scrotcheck })
+        {
+            process.Start();
+
+            // Read the output and error streams
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
+            process.WaitForExit();
+
+            // Check if there is an error output
+            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: scrot:"))
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("scrot");
+            }
+            else if (!string.IsNullOrWhiteSpace(output))
+            {
+                Console.WriteLine("scrot check: Installed");
+            }
+            else
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("scrot");
+            }
+        }
+
+        using (var process = new Process { StartInfo = wmctrlcheck })
+        {
+            process.Start();
+
+            // Read the output and error streams
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
+            process.WaitForExit();
+
+            // Check if there is an error output
+            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: wmctrl:"))
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("wmctrl");
+            }
+            else if (!string.IsNullOrWhiteSpace(output))
+            {
+                Console.WriteLine("wmctrl check: Installed");
+            }
+            else
+            {
+                this.Opened += async (sender, args) => await ShowMessageBoxAsync("wmctrl");
+            }
+        }
+
+
     }
 
     public void Flipping_Click(object sender, RoutedEventArgs args)
@@ -54,7 +173,7 @@ public partial class MainWindow : Avalonia.Controls.Window
                     {
                         string result = reader.ReadToEnd();
 
-                        Console.WriteLine("outputs:\n" + result);
+                        //Console.WriteLine("outputs:\n" + result);
 
                         ParseXrandrOutput(result);
                     }
@@ -96,7 +215,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         }
     }
 
-    public void UnFlipping_Click(object sender, RoutedEventArgs args)
+    public void Unflipping_Click(object sender, RoutedEventArgs args)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
@@ -125,7 +244,7 @@ public partial class MainWindow : Avalonia.Controls.Window
                     {
                         string result = reader.ReadToEnd();
 
-                        Console.WriteLine("outputs:\n" + result);
+                        //Console.WriteLine("outputs:\n" + result);
 
                         ParseXrandrOutput(result);
                     }
@@ -161,7 +280,7 @@ public partial class MainWindow : Avalonia.Controls.Window
 
 
     // Experimental button for flipping currently selected skin's elements
-    public void Test_Click(object sender, RoutedEventArgs args)
+    public void GetAndEditSkinFolder(object sender, RoutedEventArgs args)
     {
         try
         {
@@ -258,7 +377,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error in Test_Click: {ex.Message}");
+            Console.WriteLine($"Error in GetAndEditSkinFolder: {ex.Message}");
         }
     }
 
@@ -1101,14 +1220,14 @@ public partial class MainWindow : Avalonia.Controls.Window
     {
         FlipTabletArea(sender, args, 180.0);
         Flipping_Click(sender, args);
-        Test_Click(sender, args);
+        GetAndEditSkinFolder(sender, args);
         FocusAndRefresh(sender, args);
     }
     public void UndoAll_Click(object sender, RoutedEventArgs args)
     {
         FlipTabletArea(sender, args, 0.0);
-        UnFlipping_Click(sender, args);
-        Test_Click(sender, args);
+        Unflipping_Click(sender, args);
+        GetAndEditSkinFolder(sender, args);
         FocusAndRefresh(sender, args);
     }
 
@@ -1983,7 +2102,7 @@ public partial class MainWindow : Avalonia.Controls.Window
     public void UndoAllManual_Click(object sender, RoutedEventArgs args)
     {
         FlipTabletArea(sender, args, 0.0);
-        UnFlipping_Click(sender, args);
+        Unflipping_Click(sender, args);
         FlipSkinManually(sender, args);
         FocusAndRefresh(sender, args);
     }
@@ -2004,6 +2123,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         Task.Delay(1500).GetAwaiter().GetResult();
 
         RunShellCommand("xdotool type 'export skin'");
+        Thread.Sleep(2000);
 
         var buttonLocation = FindImageOnScreen("button.png", 0.50);
         if (buttonLocation != null)
@@ -2029,7 +2149,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         Task.Delay(1500).GetAwaiter().GetResult();
 
         RunShellCommand("xdotool type 'delete sel skin'");
-        Thread.Sleep(1000);
+        Thread.Sleep(2000);
 
         var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
         if (buttonLocation != null)
@@ -2112,7 +2232,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             Task.Delay(1500).GetAwaiter().GetResult();
 
             RunShellCommand("xdotool type 'delete sel skin'");
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
             if (buttonLocation != null)
@@ -2901,6 +3021,8 @@ public partial class MainWindow : Avalonia.Controls.Window
             if (appImagePath != null)
             {
                 RunAppImage(appImagePath, parameter);
+                Thread.Sleep(500);
+                RunShellCommand("wmctrl -R 'osu!'");
             }
             else
             {
@@ -2955,6 +3077,21 @@ public partial class MainWindow : Avalonia.Controls.Window
                     Console.WriteLine($"Error: {error}");
                 }
             }
+
+            Thread.Sleep(1500);
+
+            File.Delete("/tmp/screenshot.png");
+            var buttonLocation = FindImageOnScreen("buttonimported.png", 0.50);
+            if (buttonLocation != null)
+            {
+                RunShellCommand("wmctrl -R 'osu!'");
+                Thread.Sleep(100);
+                RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
+            }
+            else
+            {
+                Console.WriteLine("Button not found!");
+            }
         }
     }
 
@@ -2979,7 +3116,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         Task.Delay(1500).GetAwaiter().GetResult();
 
         RunShellCommand("xdotool type 'delete sel skin'");
-        Thread.Sleep(1000);
+        Thread.Sleep(2000);
 
         var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
         if (buttonLocation != null)
@@ -3753,6 +3890,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             if (appImagePath != null)
             {
                 RunAppImage(appImagePath, parameter);
+                
             }
             else
             {
@@ -3807,6 +3945,42 @@ public partial class MainWindow : Avalonia.Controls.Window
                     Console.WriteLine($"Error: {error}");
                 }
             }
+
+            Thread.Sleep(1000);
+
+            File.Delete("/tmp/screenshot.png");
+            var importButtonLocation = FindImageOnScreen("buttonimported.png", 0.50);
+            if (importButtonLocation != null)
+            {
+                RunShellCommand("wmctrl -R 'osu!'");
+                Thread.Sleep(100);
+                RunShellCommand($"xdotool mousemove {importButtonLocation.Value.X} {importButtonLocation.Value.Y} click 1");
+            }
+            else
+            {
+                Console.WriteLine("Button not found!");
+            }
+        
         }
     }
+
+    public void ExportLazer_Click(object sender, RoutedEventArgs args)
+    {
+        ExportLazerSkin(sender, args);
+    }
+
+    public void EditLazer_Click(object sender, RoutedEventArgs args)
+    {
+        EditLazerSkin(sender, args);
+        FlipTabletArea(sender, args, 180.0);
+        Flipping_Click(sender, args);
+    }
+
+    public void UndoLazer_Click(object sender, RoutedEventArgs args)
+    {
+        FlipTabletArea(sender, args, 0.0);
+        UndoEditsLazerSkin(sender, args);
+        Unflipping_Click(sender, args);
+    }
 }
+

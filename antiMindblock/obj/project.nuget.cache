@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "l9VxA4jNEQJVN5crOtsuc5sOKRule8vqXznHXLdnC6ZrVmSEi/+SYCzm9KyhP7alTcfCmff0SfqkK2Mh5IqxLQ==",
+  "dgSpecHash": "g7tl7yue3rWLH75MkyrYhQj0I9eh3aElGPYvgwBc+Sj+6jgHfEsTMTh37gjtjvj11UyXY/+5cV+/oBJQcOf5Tw==",
   "success": true,
   "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
   "expectedPackageFiles": [
@@ -14,7 +14,11 @@
     "/home/jakub/.nuget/packages/avalonia.remote.protocol/11.1.0/avalonia.remote.protocol.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.themes.fluent/11.1.0/avalonia.themes.fluent.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.themes.simple/11.1.0/avalonia.themes.simple.11.1.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/colortextblock.avalonia/11.0.2/colortextblock.avalonia.11.0.2.nupkg.sha512",
     "/home/jakub/.nuget/packages/communitytoolkit.mvvm/8.2.1/communitytoolkit.mvvm.8.2.1.nupkg.sha512",
+    "/home/jakub/.nuget/packages/dialoghost.avalonia/0.7.7/dialoghost.avalonia.0.7.7.nupkg.sha512",
+    "/home/jakub/.nuget/packages/markdown.avalonia.tight/11.0.2/markdown.avalonia.tight.11.0.2.nupkg.sha512",
+    "/home/jakub/.nuget/packages/messagebox.avalonia/3.1.6/messagebox.avalonia.3.1.6.nupkg.sha512",
     "/home/jakub/.nuget/packages/microcom.runtime/0.11.0/microcom.runtime.0.11.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/microsoft.win32.systemevents/8.0.0/microsoft.win32.systemevents.8.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/newtonsoft.json/13.0.1/newtonsoft.json.13.0.1.nupkg.sha512",
@@ -25,6 +29,7 @@
     "/home/jakub/.nuget/packages/skiasharp.nativeassets.win32/2.88.8/skiasharp.nativeassets.win32.2.88.8.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.drawing.common/8.0.8/system.drawing.common.8.0.8.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/home/jakub/.nuget/packages/system.reactive/6.0.0/system.reactive.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.text.encoding.codepages/7.0.0/system.text.encoding.codepages.7.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.8/microsoft.aspnetcore.app.ref.8.0.8.nupkg.sha512"
