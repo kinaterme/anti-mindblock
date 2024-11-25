@@ -19,6 +19,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = browser
 build_property.RootNamespace = antiMindblock.Browser
-build_property.ProjectDir = /home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/
+build_property.ProjectDir = /home/jakub/Documents/antiMindblock/antiMindblock.Browser/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = false

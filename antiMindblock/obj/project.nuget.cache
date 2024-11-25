@@ -1,19 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "g7tl7yue3rWLH75MkyrYhQj0I9eh3aElGPYvgwBc+Sj+6jgHfEsTMTh37gjtjvj11UyXY/+5cV+/oBJQcOf5Tw==",
+  "dgSpecHash": "mC7TlMCduK+QihLlf5Pqb4BN0H6xfumb1Y5/JRkYtyvqiRieuYLEa1woF/K/2Fq6ieXy9Y+U2q1LsMdkxq7WSQ==",
   "success": true,
   "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
   "expectedPackageFiles": [
     "/home/jakub/.nuget/packages/aspose.imaging/24.9.0/aspose.imaging.24.9.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia/11.1.0/avalonia.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.buildservices/0.0.29/avalonia.buildservices.0.0.29.nupkg.sha512",
-    "/home/jakub/.nuget/packages/avalonia.controls.colorpicker/11.1.0/avalonia.controls.colorpicker.11.1.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/avalonia.controls.datagrid/11.1.0/avalonia.controls.datagrid.11.1.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/avalonia.diagnostics/11.1.0/avalonia.diagnostics.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.fonts.inter/11.1.0/avalonia.fonts.inter.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.remote.protocol/11.1.0/avalonia.remote.protocol.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.themes.fluent/11.1.0/avalonia.themes.fluent.11.1.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/avalonia.themes.simple/11.1.0/avalonia.themes.simple.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/colortextblock.avalonia/11.0.2/colortextblock.avalonia.11.0.2.nupkg.sha512",
     "/home/jakub/.nuget/packages/communitytoolkit.mvvm/8.2.1/communitytoolkit.mvvm.8.2.1.nupkg.sha512",
     "/home/jakub/.nuget/packages/dialoghost.avalonia/0.7.7/dialoghost.avalonia.0.7.7.nupkg.sha512",
@@ -32,7 +28,9 @@
     "/home/jakub/.nuget/packages/system.reactive/6.0.0/system.reactive.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.text.encoding.codepages/7.0.0/system.text.encoding.codepages.7.0.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.8/microsoft.aspnetcore.app.ref.8.0.8.nupkg.sha512"
+    "/home/jakub/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/8.0.10/microsoft.netcore.app.runtime.linux-x64.8.0.10.nupkg.sha512",
+    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.10/microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512",
+    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/8.0.10/microsoft.aspnetcore.app.runtime.linux-x64.8.0.10.nupkg.sha512"
   ],
   "logs": []
 }

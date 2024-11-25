@@ -16,6 +16,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using System.Linq.Expressions;
+using Avalonia.Controls.Documents;
+using System.Transactions;
 
 namespace antiMindblock.Views;
 
@@ -2109,10 +2112,22 @@ public partial class MainWindow : Avalonia.Controls.Window
     public void ExportLazerSkin(object sender, RoutedEventArgs args)
     {
         string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string lazerExportDirectoryCleanup = Path.Combine(homeDirectory, ".local/share/osu/exports");
+        string lazerDefaultExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
+        string lazerExportDirectoryCleanup = Path.Combine(homeDirectory, ".local/share/osu/backupmindblock");
         string quotedExportDirectoryCleanup = $"\"{lazerExportDirectoryCleanup}\"";
         string everyFileInDirectory = Path.Combine(lazerExportDirectoryCleanup, "*");
-        RunShellCommand($"cd {quotedExportDirectoryCleanup} && rm -rf {everyFileInDirectory}");
+        string everyReplayInDefaultDirectory = Path.Combine(lazerDefaultExportDirectory, "*.osr");
+        string everyFileInDefaultDirectory = Path.Combine(lazerDefaultExportDirectory, "*");
+        if (Directory.Exists($"{lazerExportDirectoryCleanup}"))
+        {
+            Console.WriteLine("Export directory exists.");
+        }
+        else 
+        {
+            RunShellCommand($"mkdir {quotedExportDirectoryCleanup}");
+        }
+        RunShellCommand($"mv {everyReplayInDefaultDirectory} {lazerExportDirectoryCleanup}");
+        RunShellCommand($"cd {lazerDefaultExportDirectory} && rm -rf {everyFileInDefaultDirectory}");
         Thread.Sleep(500);
         RunShellCommand("wmctrl -R 'osu!'");
         Task.Delay(2000).GetAwaiter().GetResult();
@@ -2136,6 +2151,9 @@ public partial class MainWindow : Avalonia.Controls.Window
         {
             Console.WriteLine("Button not found!");
         }
+
+    RunShellCommand("xdotool key Escape");
+    RunShellCommand("xdotool key Escape");
     }
 
     public void DeleteLazerSkin(object sender, RoutedEventArgs args)
@@ -2149,6 +2167,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         Task.Delay(1500).GetAwaiter().GetResult();
 
         RunShellCommand("xdotool type 'delete sel skin'");
+        RunShellCommand("xdotool mousemove 1 1");
         Thread.Sleep(2000);
 
         var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
@@ -2232,6 +2251,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             Task.Delay(1500).GetAwaiter().GetResult();
 
             RunShellCommand("xdotool type 'delete sel skin'");
+            RunShellCommand("xdotool mousemove 1 1");
             Thread.Sleep(2000);
 
             var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
@@ -3961,6 +3981,8 @@ public partial class MainWindow : Avalonia.Controls.Window
                 Console.WriteLine("Button not found!");
             }
         
+        RunShellCommand("xdotool key Escape");
+        RunShellCommand("xdotool key Escape");
         }
     }
 
