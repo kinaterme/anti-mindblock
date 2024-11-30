@@ -546,6 +546,31 @@ public partial class MainWindow : Avalonia.Controls.Window
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9@2x.png"));
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0.png"));
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursor.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortrail.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortail.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle@2x.png"));
     }
 
     public void DoAll_Click(object sender, RoutedEventArgs args)
@@ -718,6 +743,31 @@ public partial class MainWindow : Avalonia.Controls.Window
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9@2x.png"));
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0.png"));
         AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursor.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortrail.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortail.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow@2x.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle.png"));
+        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle@2x.png"));
     }
 
     public void AutoDetectSkinInfo(object sender, RoutedEventArgs args)
@@ -949,6 +999,31 @@ public partial class MainWindow : Avalonia.Controls.Window
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png"));
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png"));
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursor.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortrail.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortail.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle@2x.png"));
 
             Thread.Sleep(1100);
 
@@ -1119,6 +1194,31 @@ public partial class MainWindow : Avalonia.Controls.Window
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png"));
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png"));
             AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursor.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortrail.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortail.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow@2x.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle.png"));
+            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle@2x.png"));
 
             Thread.Sleep(1100);
 
