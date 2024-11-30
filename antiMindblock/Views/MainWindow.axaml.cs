@@ -282,17 +282,14 @@ public partial class MainWindow : Avalonia.Controls.Window
     }
 
 
-    // Experimental button for flipping currently selected skin's elements
     public void GetAndEditSkinFolder(object sender, RoutedEventArgs args)
     {
         try
         {
             Console.WriteLine("Button clicked - Starting process check");
 
-            // Target executable name (case-insensitive check)
             string targetExecutable = "osu!.exe";
 
-            // Get all running processes
             Process[] allProcesses = Process.GetProcesses();
             Console.WriteLine($"Found {allProcesses.Length} processes");
 
@@ -300,7 +297,6 @@ public partial class MainWindow : Avalonia.Controls.Window
             {
                 try
                 {
-                    // Call method to get the process command line
                     string cmdLine = GetProcessCommandLine(proc);
 
                     // DEBUG OF PROCESSES: Console.WriteLine($"Process: {proc.ProcessName}, CmdLine: {cmdLine}");
@@ -324,14 +320,12 @@ public partial class MainWindow : Avalonia.Controls.Window
                                 string configFile = configFiles.FirstOrDefault();
                                 Console.WriteLine($"Config File Found: {configFile}");
 
-                                // Read the content of the config file
                                 string[] configLines = File.ReadAllLines(configFile);
                                 string skinName = GetSkinNameFromConfig(configLines);
                                 Console.WriteLine($"Skin Name: {skinName}");
 
                                 if (!string.IsNullOrEmpty(skinName))
                                 {
-                                    // Navigate to the Skins directory in the osu! executable directory
                                     string skinsDirectory = Path.Combine(executablePath, "Skins");
 
                                     if (Directory.Exists(skinsDirectory))
@@ -532,16 +526,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -551,7 +542,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -568,16 +558,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -587,7 +574,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -604,16 +590,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -623,7 +606,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -641,16 +623,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -660,7 +639,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -677,16 +655,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -696,7 +671,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -713,16 +687,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -732,7 +703,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -749,16 +719,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -768,7 +735,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -786,16 +752,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -805,7 +768,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -822,16 +784,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -841,7 +800,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -858,16 +816,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -877,7 +832,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -894,16 +848,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -913,7 +864,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -930,16 +880,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -949,7 +896,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -966,16 +912,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -985,7 +928,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1002,16 +944,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1021,7 +960,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1038,16 +976,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1057,7 +992,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1074,16 +1008,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1093,7 +1024,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1110,16 +1040,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1129,7 +1056,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1146,16 +1072,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1165,7 +1088,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1182,16 +1104,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1201,7 +1120,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1378,7 +1296,6 @@ public partial class MainWindow : Avalonia.Controls.Window
             {
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1388,7 +1305,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-1.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1405,16 +1321,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1424,7 +1337,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-1@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1441,16 +1353,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1460,7 +1369,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1477,16 +1385,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1496,7 +1401,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-2@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1513,16 +1417,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1532,7 +1433,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1549,16 +1449,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1568,7 +1465,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-3@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1585,16 +1481,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1604,7 +1497,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1621,16 +1513,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1640,7 +1529,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-4@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1657,16 +1545,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1676,7 +1561,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1693,16 +1577,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1712,7 +1593,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-5@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1729,16 +1609,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1748,7 +1625,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1765,16 +1641,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1784,7 +1657,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-6@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1801,16 +1673,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1820,7 +1689,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1837,16 +1705,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1856,7 +1721,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-7@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1873,16 +1737,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1892,7 +1753,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1909,16 +1769,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1928,7 +1785,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-8@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1945,16 +1801,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -1964,7 +1817,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -1981,16 +1833,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -2000,7 +1849,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-9@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -2017,16 +1865,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -2036,7 +1881,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -2053,16 +1897,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         try
         {
-            // Create the full path to the image
             string imagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
 
             using (var input = File.OpenRead(imagePath))
             using (var originalBitmap = SKBitmap.Decode(input))
             {
-                // Create a new bitmap with the same dimensions
                 var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                // Rotation
                 using (var canvas = new SKCanvas(rotatedBitmap))
                 {
                     canvas.Clear(SKColors.Transparent);
@@ -2072,7 +1913,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                 }
 
-                // Save the rotated image
                 string rotatedImagePath = Path.Combine(quotedPath.Trim('"'), "default-0@2x.png");
                 using (var output = File.OpenWrite(rotatedImagePath))
                 {
@@ -2336,16 +2176,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2355,7 +2192,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2372,16 +2208,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2391,7 +2224,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2408,16 +2240,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2427,7 +2256,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2444,16 +2272,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2463,7 +2288,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2480,16 +2304,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2499,7 +2320,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2516,16 +2336,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2535,7 +2352,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2552,16 +2368,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2571,7 +2384,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2588,16 +2400,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2607,7 +2416,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2624,16 +2432,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2643,7 +2448,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2660,16 +2464,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2679,7 +2480,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2696,16 +2496,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2715,7 +2512,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2732,16 +2528,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2751,7 +2544,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2768,16 +2560,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2787,7 +2576,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2804,16 +2592,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2823,7 +2608,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2840,16 +2624,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2859,7 +2640,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2876,16 +2656,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2895,7 +2672,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2912,16 +2688,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2931,7 +2704,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2948,16 +2720,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -2967,7 +2736,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -2984,16 +2752,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3003,7 +2768,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3169,16 +2933,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3188,7 +2949,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3205,16 +2965,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3224,7 +2981,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3241,16 +2997,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3260,7 +3013,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3277,16 +3029,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3296,7 +3045,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3313,16 +3061,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3332,7 +3077,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3349,16 +3093,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3368,7 +3109,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3385,16 +3125,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3404,7 +3141,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3421,16 +3157,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3440,7 +3173,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3457,16 +3189,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3476,7 +3205,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3493,16 +3221,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3512,7 +3237,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3529,16 +3253,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3548,7 +3269,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3565,16 +3285,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3584,7 +3301,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3601,16 +3317,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3620,7 +3333,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3637,16 +3349,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3656,7 +3365,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3673,16 +3381,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3692,7 +3397,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3709,16 +3413,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3728,7 +3429,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3745,16 +3445,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3764,7 +3461,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3781,16 +3477,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3800,7 +3493,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3817,16 +3509,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3836,7 +3525,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {
@@ -3853,16 +3541,13 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             try
             {
-                // Create the full path to the image
                 string imagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
 
                 using (var input = File.OpenRead(imagePath))
                 using (var originalBitmap = SKBitmap.Decode(input))
                 {
-                    // Create a new bitmap with the same dimensions
                     var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
 
-                    // Rotation
                     using (var canvas = new SKCanvas(rotatedBitmap))
                     {
                         canvas.Clear(SKColors.Transparent);
@@ -3872,7 +3557,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                         canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
                     }
 
-                    // Save the rotated image
                     string rotatedImagePath = Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png");
                     using (var output = File.OpenWrite(rotatedImagePath))
                     {

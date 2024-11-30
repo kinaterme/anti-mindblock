@@ -1,20 +1,24 @@
 {
   "version": 2,
-  "dgSpecHash": "12hag0bK+PYBv6HUswsFJufcE6ivUW9/8e6Ulebya+EJ1VxBsYCE4i51noPHw15qzzZSxDAWIwXYeJbvmco3mw==",
+  "dgSpecHash": "EckpEeiec4LM/bREqL0ozCxbttDVmGFTVvXAjf6eGXI5+PseUEMGbJeo5kneBn4f6BqNcr/7aERz2KzRI7UsXA==",
   "success": true,
-  "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+  "projectFilePath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
   "expectedPackageFiles": [
     "/home/jakub/.nuget/packages/aspose.imaging/24.9.0/aspose.imaging.24.9.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia/11.1.0/avalonia.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.angle.windows.natives/2.1.22045.20230930/avalonia.angle.windows.natives.2.1.22045.20230930.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.buildservices/0.0.29/avalonia.buildservices.0.0.29.nupkg.sha512",
+    "/home/jakub/.nuget/packages/avalonia.controls.colorpicker/11.1.0/avalonia.controls.colorpicker.11.1.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/avalonia.controls.datagrid/11.1.0/avalonia.controls.datagrid.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.desktop/11.1.0/avalonia.desktop.11.1.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/avalonia.diagnostics/11.1.0/avalonia.diagnostics.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.fonts.inter/11.1.0/avalonia.fonts.inter.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.freedesktop/11.1.0/avalonia.freedesktop.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.native/11.1.0/avalonia.native.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.remote.protocol/11.1.0/avalonia.remote.protocol.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.skia/11.1.0/avalonia.skia.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.themes.fluent/11.1.0/avalonia.themes.fluent.11.1.0.nupkg.sha512",
+    "/home/jakub/.nuget/packages/avalonia.themes.simple/11.1.0/avalonia.themes.simple.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.win32/11.1.0/avalonia.win32.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia.x11/11.1.0/avalonia.x11.11.1.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/colortextblock.avalonia/11.0.2/colortextblock.avalonia.11.0.2.nupkg.sha512",
@@ -45,10 +49,7 @@
     "/home/jakub/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.text.encoding.codepages/7.0.0/system.text.encoding.codepages.7.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/tmds.dbus.protocol/0.16.0/tmds.dbus.protocol.0.16.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/8.0.10/microsoft.netcore.app.runtime.linux-x64.8.0.10.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.10/microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/8.0.10/microsoft.aspnetcore.app.runtime.linux-x64.8.0.10.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.netcore.app.host.linux-x64/8.0.10/microsoft.netcore.app.host.linux-x64.8.0.10.nupkg.sha512"
+    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.8/microsoft.aspnetcore.app.ref.8.0.8.nupkg.sha512"
   ],
   "logs": []
 }

@@ -15,15 +15,15 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = antiMindblock
-build_property.ProjectDir = /home/jakub/Documents/antiMindblock/antiMindblock/
+build_property.ProjectDir = /home/jakub/Documents/anti-mindblock/antiMindblock/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[/home/jakub/Documents/antiMindblock/antiMindblock/App.axaml]
+[/home/jakub/Documents/anti-mindblock/antiMindblock/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/jakub/Documents/antiMindblock/antiMindblock/Views/MainView.axaml]
+[/home/jakub/Documents/anti-mindblock/antiMindblock/Views/MainView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[/home/jakub/Documents/antiMindblock/antiMindblock/Views/MainWindow.axaml]
+[/home/jakub/Documents/anti-mindblock/antiMindblock/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

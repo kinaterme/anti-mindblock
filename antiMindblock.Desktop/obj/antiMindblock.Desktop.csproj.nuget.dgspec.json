@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {}
+    "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {}
   },
   "projects": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {
+    "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+        "projectUniqueName": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
         "projectName": "antiMindblock.Desktop",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+        "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/",
+        "outputPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj": {
-                "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj"
+              "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj": {
+                "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj"
               }
             }
           }
@@ -47,6 +47,10 @@
               "version": "[24.9.0, )"
             },
             "Avalonia.Desktop": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "Avalonia.Diagnostics": {
               "target": "Package",
               "version": "[11.1.0, )"
             },
@@ -85,19 +89,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.10, 8.0.10]"
-            },
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-              "version": "[8.0.10, 8.0.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.10, 8.0.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-              "version": "[8.0.10, 8.0.10]"
+              "version": "[8.0.8, 8.0.8]"
             }
           ],
           "frameworkReferences": {
@@ -105,23 +97,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.110/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.108/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj": {
+    "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectUniqueName": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj",
         "projectName": "antiMindblock",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/obj/",
+        "outputPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -153,6 +140,10 @@
               "version": "[24.9.0, )"
             },
             "Avalonia": {
+              "target": "Package",
+              "version": "[11.1.0, )"
+            },
+            "Avalonia.Diagnostics": {
               "target": "Package",
               "version": "[11.1.0, )"
             },
@@ -203,15 +194,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.10, 8.0.10]"
-            },
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-              "version": "[8.0.10, 8.0.10]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-              "version": "[8.0.10, 8.0.10]"
+              "version": "[8.0.8, 8.0.8]"
             }
           ],
           "frameworkReferences": {
@@ -219,12 +202,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.110/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.108/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
