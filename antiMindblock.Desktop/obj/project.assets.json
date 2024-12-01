@@ -2122,11 +2122,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+      "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
       "projectName": "antiMindblock.Desktop",
-      "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
+      "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/antiMindblock.Desktop.csproj",
       "packagesPath": "/home/jakub/.nuget/packages/",
-      "outputPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/",
+      "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock.Desktop/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -2141,8 +2141,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj": {
-              "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj"
+            "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj": {
+              "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj"
             }
           }
         }
@@ -2204,7 +2204,7 @@
         "downloadDependencies": [
           {
             "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[8.0.8, 8.0.8]"
+            "version": "[8.0.10, 8.0.10]"
           }
         ],
         "frameworkReferences": {
@@ -2212,7 +2212,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.108/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.110/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

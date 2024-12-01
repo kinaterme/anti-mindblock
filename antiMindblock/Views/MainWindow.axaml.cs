@@ -38,6 +38,9 @@ public partial class MainWindow : Avalonia.Controls.Window
     public MainWindow()
     {
         InitializeComponent();
+        
+        this.Width = 550;
+        this.Height = 300;
 
         var xdotoolcheck = new ProcessStartInfo
         {

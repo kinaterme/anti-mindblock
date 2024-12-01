@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7OISg+rQcg1+dzFM/spMQUg1L4dMBmHDQkVEc+Yv0yt5wVqbb+DKHWhT0mWdgL2ATkM7dPakXninZpdrTRkjcA==",
+  "dgSpecHash": "OZN7aHwJv5/8PJTXZye6vr3JX8zyTfQCdQzisT0ZQSMKX3tVxklVyLh8JiOCNmEy1yMsUkcNH6+9jyuRsKxDTA==",
   "success": true,
-  "projectFilePath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj",
+  "projectFilePath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.csproj",
   "expectedPackageFiles": [
     "/home/jakub/.nuget/packages/aspose.imaging/24.9.0/aspose.imaging.24.9.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/avalonia/11.1.0/avalonia.11.1.0.nupkg.sha512",
@@ -32,7 +32,7 @@
     "/home/jakub/.nuget/packages/system.reactive/6.0.0/system.reactive.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.runtime.compilerservices.unsafe/6.0.0/system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "/home/jakub/.nuget/packages/system.text.encoding.codepages/7.0.0/system.text.encoding.codepages.7.0.0.nupkg.sha512",
-    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.8/microsoft.aspnetcore.app.ref.8.0.8.nupkg.sha512"
+    "/home/jakub/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.10/microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512"
   ],
   "logs": []
 }
