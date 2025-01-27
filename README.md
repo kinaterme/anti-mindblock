@@ -9,14 +9,13 @@ This is still in development, osu!stable works perfectly fine when using the [Wi
 ![image](https://github.com/user-attachments/assets/bfb64c52-b073-4f0f-bc67-2ca6ff5c8637)
 
 * [How to build](https://github.com/kinaterme/osuToolbox?tab=readme-ov-file#how-to-build)
-* [MissAnalyzer on macOS](https://github.com/kinaterme/osuToolbox?tab=readme-ov-file#how-to-use-missanalyzer-on-macos)
 
 ## How to build
 ### Windows:<br/>
 
 1. Install .NET 8 https://dotnet.microsoft.com/en-us/download/dotnet/8.0
   
-2. Build the toolbox
+2. Build by running these commands
 ```
 git clone https://github.com/kinaterme/anti-mindblock
 cd anti-mindblock/antiMindblock.Desktop
@@ -31,7 +30,7 @@ explorer .
 
 1. Install .NET 8 https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
-2. Build the toolbox and run it
+2. Build and run with these commands
 ```
 git clone https://github.com/kinaterme/anti-mindblock
 cd anti-mindblock/antiMindblock.Desktop
@@ -45,7 +44,7 @@ cd bin/Release/net8.0/osx-arm64/publish
 
 1. Install .NET 8 https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
-2. Build the toolbox and run it
+2. Build and run with these commands
 ```
 git clone https://github.com/kinaterme/anti-mindblock
 cd anti-mindblock/antiMindblock.Desktop
@@ -58,7 +57,7 @@ cd bin/Release/net8.0/osx-x64/publish
 
 1. Install .NET 8 https://dotnet.microsoft.com/en-us/download/dotnet/8.0 (or use a package manager)
 
-2. Build the toolbox and run it
+2. Build and run with these commands
 ```
 git clone https://github.com/kinaterme/anti-mindblock
 cd anti-mindblock/antiMindblock.Desktop
