@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/antiMindblock.Browser.csproj": {}
+    "/home/jakub/Documents/anti-mindblock/antiMindblock.Browser/antiMindblock.Browser.csproj": {}
   },
   "projects": {
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/antiMindblock.Browser.csproj": {
+    "/home/jakub/Documents/anti-mindblock/antiMindblock.Browser/antiMindblock.Browser.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/antiMindblock.Browser.csproj",
+        "projectUniqueName": "/home/jakub/Documents/anti-mindblock/antiMindblock.Browser/antiMindblock.Browser.csproj",
         "projectName": "antiMindblock.Browser",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/antiMindblock.Browser.csproj",
+        "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Browser/antiMindblock.Browser.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock.Browser/obj/",
+        "outputPath": "/home/jakub/Documents/anti-mindblock/antiMindblock.Browser/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0-browser1.0": {
             "targetAlias": "net8.0-browser",
             "projectReferences": {
-              "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj": {
-                "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj"
+              "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj": {
+                "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj"
               }
             }
           }
@@ -44,18 +44,18 @@
           "dependencies": {
             "Avalonia.Browser": {
               "target": "Package",
-              "version": "[11.1.0, )"
+              "version": "[11.2.3, )"
             },
             "Microsoft.NET.ILLink.Tasks": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.8, )",
+              "version": "[8.0.11, )",
               "autoReferenced": true
             },
             "Microsoft.NET.Sdk.WebAssembly.Pack": {
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.8, )",
+              "version": "[8.0.12, )",
               "autoReferenced": true
             }
           },
@@ -73,11 +73,11 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.8, 8.0.8]"
+              "version": "[8.0.11, 8.0.11]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-              "version": "[8.0.8, 8.0.8]"
+              "version": "[8.0.12, 8.0.12]"
             }
           ],
           "frameworkReferences": {
@@ -85,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.108/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
@@ -94,14 +94,14 @@
         }
       }
     },
-    "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj": {
+    "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectUniqueName": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj",
         "projectName": "antiMindblock",
-        "projectPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/antiMindblock.csproj",
+        "projectPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/antiMindblock.csproj",
         "packagesPath": "/home/jakub/.nuget/packages/",
-        "outputPath": "/home/jakub/Documents/antiMindblock/antiMindblock/antiMindblock/obj/",
+        "outputPath": "/home/jakub/Documents/anti-mindblock/antiMindblock/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/jakub/.nuget/NuGet/NuGet.Config"
@@ -128,25 +128,49 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Aspose.Imaging": {
+              "target": "Package",
+              "version": "[24.12.0, )"
+            },
             "Avalonia": {
               "target": "Package",
-              "version": "[11.1.0, )"
+              "version": "[11.2.3, )"
             },
             "Avalonia.Diagnostics": {
               "target": "Package",
-              "version": "[11.1.0, )"
+              "version": "[11.2.3, )"
             },
             "Avalonia.Fonts.Inter": {
               "target": "Package",
-              "version": "[11.1.0, )"
+              "version": "[11.2.3, )"
             },
             "Avalonia.Themes.Fluent": {
               "target": "Package",
-              "version": "[11.1.0, )"
+              "version": "[11.2.3, )"
             },
             "CommunityToolkit.Mvvm": {
               "target": "Package",
-              "version": "[8.2.1, )"
+              "version": "[8.4.0, )"
+            },
+            "MessageBox.Avalonia": {
+              "target": "Package",
+              "version": "[3.2.0, )"
+            },
+            "OpenCvSharp4": {
+              "target": "Package",
+              "version": "[4.10.0.20241108, )"
+            },
+            "OpenCvSharp4.Extensions": {
+              "target": "Package",
+              "version": "[4.10.0.20241108, )"
+            },
+            "SkiaSharp": {
+              "target": "Package",
+              "version": "[3.116.1, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[9.0.1, )"
             }
           },
           "imports": [
@@ -163,7 +187,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.8, 8.0.8]"
+              "version": "[8.0.11, 8.0.11]"
             }
           ],
           "frameworkReferences": {
@@ -171,7 +195,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.108/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
