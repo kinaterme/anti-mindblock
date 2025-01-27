@@ -5,9 +5,7 @@ A tool made for avoiding mindblock by flipping your screen and skin automaticall
 ### NOTE: No support for Windows and macOS yet (use [Shikkesora's tool](https://github.com/ShikkesoraSIM/anti-mindblock))
 
 This is still in development, osu!stable works perfectly fine when using the [Winello](https://github.com/NelloKudo/osu-winello) script and osu!lazer works if you wait patiently.
-
 ![image](https://github.com/user-attachments/assets/bfb64c52-b073-4f0f-bc67-2ca6ff5c8637)
-
 * [How to build](https://github.com/kinaterme/osuToolbox?tab=readme-ov-file#how-to-build)
 
 ## How to build
