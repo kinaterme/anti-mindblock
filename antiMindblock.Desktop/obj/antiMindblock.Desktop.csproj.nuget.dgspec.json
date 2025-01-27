@@ -50,6 +50,10 @@
               "target": "Package",
               "version": "[11.2.3, )"
             },
+            "Avalonia.Diagnostics": {
+              "target": "Package",
+              "version": "[11.2.3, )"
+            },
             "MessageBox.Avalonia": {
               "target": "Package",
               "version": "[3.2.0, )"
@@ -94,18 +98,6 @@
             {
               "name": "Microsoft.AspNetCore.App.Ref",
               "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
             }
           ],
           "frameworkReferences": {
@@ -114,11 +106,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
         }
       }
     },
@@ -161,6 +148,10 @@
               "version": "[24.12.0, )"
             },
             "Avalonia": {
+              "target": "Package",
+              "version": "[11.2.3, )"
+            },
+            "Avalonia.Diagnostics": {
               "target": "Package",
               "version": "[11.2.3, )"
             },
@@ -212,14 +203,6 @@
             {
               "name": "Microsoft.AspNetCore.App.Ref",
               "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-              "version": "[8.0.11, 8.0.11]"
             }
           ],
           "frameworkReferences": {
@@ -228,11 +211,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "linux-x64": {
-          "#import": []
         }
       }
     }

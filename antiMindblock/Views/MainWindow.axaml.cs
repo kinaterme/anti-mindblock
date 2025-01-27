@@ -39,6 +39,107 @@ public partial class MainWindow : Avalonia.Controls.Window
     {
         InitializeComponent();
         
+        // if running from source detected:
+        string binaryPath = Path.GetDirectoryName(Environment.ProcessPath);
+        string appimageOrSourceCheck = Path.Combine(binaryPath, "button.png");
+        string copyImagesIfSource = Path.Combine(binaryPath, "*.png");
+        string quotedcopyImagesIfSource = $"\"{copyImagesIfSource}\"";
+        string quotedappimageOrSourceCheck = $"\"{appimageOrSourceCheck}\"";
+        if (binaryPath == null)
+        {
+            Console.WriteLine("Failed to determine the AppImage directory.");
+            return;
+        }
+
+        string binaryFileName = Path.GetFileName(Environment.ProcessPath);
+        if (string.IsNullOrEmpty(binaryFileName))
+        {
+            Console.WriteLine("Failed to determine the AppImage filename.");
+            return;
+        }
+
+        string fullbinaryPath = Path.Combine(binaryPath, binaryFileName);
+
+        if (File.Exists(Path.Combine(binaryPath, "button.png"))) 
+        {
+            Directory.Delete("/tmp/squashfs-root/", true);
+            Directory.CreateDirectory("/tmp/squashfs-root/");
+            RunShellCommand($"cp -r {quotedcopyImagesIfSource} '/tmp/squashfs-root/'");
+        }
+
+        // If appimage gets detected:
+        string appImageOriginalPath = Environment.GetEnvironmentVariable("APPIMAGE");
+        if (string.IsNullOrEmpty(appImageOriginalPath))
+        {
+            Console.WriteLine("Failed to determine the original AppImage path. \n Running from source. \n If you're running the AppImage build, \n $APPIMAGE might not be set!");
+            return;
+        }
+
+        Console.WriteLine($"AppImage Path: {appImageOriginalPath}");
+
+        string appImageDirectory = Path.GetDirectoryName(appImageOriginalPath);
+        string appImageFileName = Path.GetFileName(appImageOriginalPath);
+
+        if (appImageDirectory == null || appImageFileName == null)
+        {
+            Console.WriteLine("Failed to parse the AppImage path.");
+            return;
+        }
+
+        Process extractProcess = new Process
+        {
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = "bash",
+                Arguments = $"-c \"./{appImageFileName} --appimage-extract\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                WorkingDirectory = appImageDirectory
+            }
+        };
+
+        try
+        {
+            if (!File.Exists("/tmp/squashfs-root/button.png"))
+            {
+                extractProcess.Start();
+                string output = extractProcess.StandardOutput.ReadToEnd();
+                string error = extractProcess.StandardError.ReadToEnd();
+                extractProcess.WaitForExit();
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Console.WriteLine("Extraction Error:");
+                    Console.WriteLine(error);
+                }
+
+                string extractedFolder = Path.Combine(appImageDirectory, "squashfs-root");
+                string tmpFolder = Path.Combine("/tmp", "squashfs-root");
+
+                if (Directory.Exists(extractedFolder))
+                {
+                    if (Directory.Exists(tmpFolder))
+                    {
+                        Directory.Delete(tmpFolder, true);
+                    }
+
+                    RunShellCommand($"cp -r {extractedFolder} {tmpFolder}");
+                    Console.WriteLine($"Moved extracted folder to {tmpFolder}");
+                    Directory.Delete(Path.Combine(appImageDirectory, "squashfs-root"), true);
+                }
+                else
+                {
+                    Console.WriteLine("The extracted folder 'squashfs-root' was not found.");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred: {ex.Message}");
+        }
+
         this.Width = 550;
         this.Height = 300;
 
@@ -210,8 +311,6 @@ public partial class MainWindow : Avalonia.Controls.Window
                     }
                 }
             }
-
-
         }
 
 
@@ -291,7 +390,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         {
             Console.WriteLine("Button clicked - Starting process check");
 
-            string targetExecutable = "osu!.exe";
+            string targetExecutable = "osu!/osu!.exe";
 
             Process[] allProcesses = Process.GetProcesses();
             Console.WriteLine($"Found {allProcesses.Length} processes");
@@ -399,7 +498,7 @@ public partial class MainWindow : Avalonia.Controls.Window
     public string ExtractExecutablePath(string cmdLine)
     {
         string[] parts = cmdLine.Split(' ');
-        string executableFullPath = parts[0];
+        string executableFullPath = parts[4];
         string unixStylePath = ConvertWinePathToUnix(executableFullPath);
         return Path.GetDirectoryName(unixStylePath);
     }
@@ -434,7 +533,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         {
             Console.WriteLine("Button clicked - Starting process check");
 
-            string targetExecutable = "osu!.exe";
+            string targetExecutable = "osu!/osu!.exe";
 
             // Get all running processes
             Process[] allProcesses = Process.GetProcesses();
@@ -606,7 +705,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         };
 
         Process.Start(startInfo);
-        Thread.Sleep(900);
+        Thread.Sleep(1050);
         string refreshSkin = "xdotool key ctrl+alt+shift+s";
 
         ProcessStartInfo refreshS = new ProcessStartInfo
@@ -824,7 +923,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         RunShellCommand("xdotool type 'export skin'");
         Thread.Sleep(2000);
 
-        var buttonLocation = FindImageOnScreen("button.png", 0.50);
+        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/button.png", 0.50);
         if (buttonLocation != null)
         {
             RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
@@ -850,11 +949,11 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         Task.Delay(1500).GetAwaiter().GetResult();
 
-        RunShellCommand("xdotool type 'delete sel skin'");
+        RunShellCommand("xdotool type 'delete skin'");
         RunShellCommand("xdotool mousemove 1 1");
         Thread.Sleep(2000);
 
-        var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
         if (buttonLocation != null)
         {
             RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
@@ -867,7 +966,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         File.Delete("/tmp/screenshot.png");
         Thread.Sleep(1000);
 
-        var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+        var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
         if (confirmationButtonLocation != null)
         {
             RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
@@ -934,11 +1033,11 @@ public partial class MainWindow : Avalonia.Controls.Window
 
             Task.Delay(1500).GetAwaiter().GetResult();
 
-            RunShellCommand("xdotool type 'delete sel skin'");
+            RunShellCommand("xdotool type 'delete skin'");
             RunShellCommand("xdotool mousemove 1 1");
             Thread.Sleep(2000);
 
-            var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+            var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
             if (buttonLocation != null)
             {
                 RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
@@ -951,7 +1050,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             File.Delete("/tmp/screenshot.png");
             Thread.Sleep(1000);
 
-            var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+            var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
             if (confirmationButtonLocation != null)
             {
                 RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
@@ -1111,7 +1210,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             Thread.Sleep(1500);
 
             File.Delete("/tmp/screenshot.png");
-            var buttonLocation = FindImageOnScreen("buttonimported.png", 0.50);
+            var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttonimported.png", 0.50);
             if (buttonLocation != null)
             {
                 RunShellCommand("wmctrl -R 'osu!'");
@@ -1145,10 +1244,10 @@ public partial class MainWindow : Avalonia.Controls.Window
 
         Task.Delay(1500).GetAwaiter().GetResult();
 
-        RunShellCommand("xdotool type 'delete sel skin'");
+        RunShellCommand("xdotool type 'delete skin'");
         Thread.Sleep(2000);
 
-        var buttonLocation = FindImageOnScreen("buttondelete.png", 0.50);
+        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
         if (buttonLocation != null)
         {
             RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
@@ -1161,7 +1260,7 @@ public partial class MainWindow : Avalonia.Controls.Window
         File.Delete("/tmp/screenshot.png");
         Thread.Sleep(1000);
 
-        var confirmationButtonLocation = FindImageOnScreen("confirm.png", 0.50);
+        var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
         if (confirmationButtonLocation != null)
         {
             RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
@@ -1305,7 +1404,7 @@ public partial class MainWindow : Avalonia.Controls.Window
             Thread.Sleep(1000);
 
             File.Delete("/tmp/screenshot.png");
-            var importButtonLocation = FindImageOnScreen("buttonimported.png", 0.50);
+            var importButtonLocation = FindImageOnScreen("/tmp/squashfs-root/buttonimported.png", 0.50);
             if (importButtonLocation != null)
             {
                 RunShellCommand("wmctrl -R 'osu!'");

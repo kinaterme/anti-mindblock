@@ -107,6 +107,59 @@
           "buildTransitive/Avalonia.BuildServices.targets": {}
         }
       },
+      "Avalonia.Controls.ColorPicker/11.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.2.3",
+          "Avalonia.Remote.Protocol": "11.2.3"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Controls.ColorPicker.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Controls.ColorPicker.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Avalonia.Controls.DataGrid/11.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.2.3",
+          "Avalonia.Remote.Protocol": "11.2.3"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Avalonia.Diagnostics/11.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.2.3",
+          "Avalonia.Controls.ColorPicker": "11.2.3",
+          "Avalonia.Controls.DataGrid": "11.2.3",
+          "Avalonia.Themes.Simple": "11.2.3"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Diagnostics.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Diagnostics.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Avalonia.Fonts.Inter/11.2.3": {
         "type": "package",
         "dependencies": {
@@ -148,6 +201,22 @@
         },
         "runtime": {
           "lib/net8.0/Avalonia.Themes.Fluent.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Avalonia.Themes.Simple/11.2.3": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.2.3"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Themes.Simple.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Themes.Simple.dll": {
             "related": ".xml"
           }
         }
@@ -400,374 +469,6 @@
           }
         }
       }
-    },
-    "net8.0/linux-x64": {
-      "Aspose.Imaging/24.12.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1",
-          "System.Text.Encoding.CodePages": "7.0.0"
-        },
-        "compile": {
-          "lib/net8.0/Aspose.Imaging.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Aspose.Imaging.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Avalonia/11.2.3": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia.BuildServices": "0.0.29",
-          "Avalonia.Remote.Protocol": "11.2.3",
-          "MicroCom.Runtime": "0.11.0"
-        },
-        "compile": {
-          "ref/net8.0/Avalonia.Base.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.Controls.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.DesignerSupport.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.Dialogs.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.Markup.Xaml.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.Markup.dll": {
-            "related": ".Xaml.xml;.xml"
-          },
-          "ref/net8.0/Avalonia.Metal.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.MicroCom.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.OpenGL.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.Vulkan.dll": {
-            "related": ".xml"
-          },
-          "ref/net8.0/Avalonia.dll": {
-            "related": ".Base.xml;.Controls.xml;.DesignerSupport.xml;.Dialogs.xml;.Markup.Xaml.xml;.Markup.xml;.Metal.xml;.MicroCom.xml;.OpenGL.xml;.Vulkan.xml;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Avalonia.Base.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.Controls.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.DesignerSupport.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.Dialogs.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.Markup.Xaml.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.Markup.dll": {
-            "related": ".Xaml.xml;.xml"
-          },
-          "lib/net8.0/Avalonia.Metal.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.MicroCom.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.OpenGL.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.Vulkan.dll": {
-            "related": ".xml"
-          },
-          "lib/net8.0/Avalonia.dll": {
-            "related": ".Base.xml;.Controls.xml;.DesignerSupport.xml;.Dialogs.xml;.Markup.Xaml.xml;.Markup.xml;.Metal.xml;.MicroCom.xml;.OpenGL.xml;.Vulkan.xml;.xml"
-          }
-        },
-        "build": {
-          "buildTransitive/Avalonia.props": {},
-          "buildTransitive/Avalonia.targets": {}
-        }
-      },
-      "Avalonia.BuildServices/0.0.29": {
-        "type": "package",
-        "build": {
-          "buildTransitive/Avalonia.BuildServices.targets": {}
-        }
-      },
-      "Avalonia.Fonts.Inter/11.2.3": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.2.3"
-        },
-        "compile": {
-          "lib/net8.0/Avalonia.Fonts.Inter.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Avalonia.Fonts.Inter.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Avalonia.Remote.Protocol/11.2.3": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Avalonia.Remote.Protocol.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Avalonia.Remote.Protocol.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Avalonia.Themes.Fluent/11.2.3": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.2.3"
-        },
-        "compile": {
-          "lib/net8.0/Avalonia.Themes.Fluent.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Avalonia.Themes.Fluent.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "CommunityToolkit.Mvvm/8.4.0": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/CommunityToolkit.Mvvm.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/CommunityToolkit.Mvvm.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "build": {
-          "buildTransitive/CommunityToolkit.Mvvm.targets": {}
-        }
-      },
-      "DialogHost.Avalonia/0.8.1": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/DialogHost.Avalonia.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/DialogHost.Avalonia.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "MessageBox.Avalonia/3.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.1.3",
-          "DialogHost.Avalonia": "0.8.1"
-        },
-        "compile": {
-          "lib/netstandard2.0/MsBox.Avalonia.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/MsBox.Avalonia.dll": {}
-        }
-      },
-      "MicroCom.Runtime/0.11.0": {
-        "type": "package",
-        "compile": {
-          "lib/net5.0/MicroCom.Runtime.dll": {}
-        },
-        "runtime": {
-          "lib/net5.0/MicroCom.Runtime.dll": {}
-        }
-      },
-      "Microsoft.Win32.SystemEvents/9.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/Microsoft.Win32.SystemEvents.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net8.0/_._": {}
-        }
-      },
-      "Newtonsoft.Json/13.0.1": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "OpenCvSharp4/4.10.0.20241108": {
-        "type": "package",
-        "dependencies": {
-          "System.Memory": "4.5.5",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/OpenCvSharp.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/OpenCvSharp.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "OpenCvSharp4.Extensions/4.10.0.20241108": {
-        "type": "package",
-        "dependencies": {
-          "OpenCvSharp4": "4.10.0.20241108",
-          "System.Drawing.Common": "8.0.0"
-        },
-        "compile": {
-          "lib/net6.0/OpenCvSharp.Extensions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/OpenCvSharp.Extensions.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "SkiaSharp/3.116.1": {
-        "type": "package",
-        "dependencies": {
-          "SkiaSharp.NativeAssets.Win32": "3.116.1",
-          "SkiaSharp.NativeAssets.macOS": "3.116.1"
-        },
-        "compile": {
-          "ref/net8.0/SkiaSharp.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/SkiaSharp.dll": {
-            "related": ".pdb"
-          }
-        }
-      },
-      "SkiaSharp.NativeAssets.macOS/3.116.1": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/_._": {}
-        },
-        "runtime": {
-          "lib/net8.0/_._": {}
-        }
-      },
-      "SkiaSharp.NativeAssets.Win32/3.116.1": {
-        "type": "package",
-        "compile": {
-          "lib/net8.0/_._": {}
-        },
-        "runtime": {
-          "lib/net8.0/_._": {}
-        }
-      },
-      "System.Drawing.Common/9.0.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Win32.SystemEvents": "9.0.1"
-        },
-        "compile": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/System.Private.Windows.Core.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net8.0/System.Drawing.Common.dll": {
-            "related": ".pdb;.xml"
-          },
-          "lib/net8.0/System.Private.Windows.Core.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net8.0/_._": {}
-        }
-      },
-      "System.Memory/4.5.5": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp2.1/_._": {}
-        },
-        "runtime": {
-          "lib/netcoreapp2.1/_._": {}
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "System.Text.Encoding.CodePages/7.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net7.0/System.Text.Encoding.CodePages.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net7.0/System.Text.Encoding.CodePages.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/net6.0/_._": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -987,6 +688,60 @@
         "tools/netstandard2.0/runtimeconfig.json"
       ]
     },
+    "Avalonia.Controls.ColorPicker/11.2.3": {
+      "sha512": "JpK84GN+CkS5H0L/mDyYa4aMAJw93dukedKK1xC4g/J5NmwQ23qFPQNqZlTs+6f9nULwJPL+jiffJpSyGMt0gg==",
+      "type": "package",
+      "path": "avalonia.controls.colorpicker/11.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avalonia.controls.colorpicker.11.2.3.nupkg.sha512",
+        "avalonia.controls.colorpicker.nuspec",
+        "lib/net6.0/Avalonia.Controls.ColorPicker.dll",
+        "lib/net6.0/Avalonia.Controls.ColorPicker.xml",
+        "lib/net8.0/Avalonia.Controls.ColorPicker.dll",
+        "lib/net8.0/Avalonia.Controls.ColorPicker.xml",
+        "lib/netstandard2.0/Avalonia.Controls.ColorPicker.dll",
+        "lib/netstandard2.0/Avalonia.Controls.ColorPicker.xml"
+      ]
+    },
+    "Avalonia.Controls.DataGrid/11.2.3": {
+      "sha512": "Ul6oWEoqs4eTQZIb4Hzf0+ajhgrCX9ypOj8TahKbkKoIznJkUoka3iV90Vpj/AuoT5AZsN6f+1+62SVPpeMApA==",
+      "type": "package",
+      "path": "avalonia.controls.datagrid/11.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avalonia.controls.datagrid.11.2.3.nupkg.sha512",
+        "avalonia.controls.datagrid.nuspec",
+        "lib/net6.0/Avalonia.Controls.DataGrid.dll",
+        "lib/net6.0/Avalonia.Controls.DataGrid.xml",
+        "lib/net8.0/Avalonia.Controls.DataGrid.dll",
+        "lib/net8.0/Avalonia.Controls.DataGrid.xml",
+        "lib/netstandard2.0/Avalonia.Controls.DataGrid.dll",
+        "lib/netstandard2.0/Avalonia.Controls.DataGrid.xml"
+      ]
+    },
+    "Avalonia.Diagnostics/11.2.3": {
+      "sha512": "Qld0UvkSLfIuZD7/gS8RIO6ww3jP+xJvsMyqU8evdphPoic7h6LAeY/ppT9NtI0r1KUDT2BpFcVDqPyQH6eSiw==",
+      "type": "package",
+      "path": "avalonia.diagnostics/11.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avalonia.diagnostics.11.2.3.nupkg.sha512",
+        "avalonia.diagnostics.nuspec",
+        "lib/net6.0/Avalonia.Diagnostics.dll",
+        "lib/net6.0/Avalonia.Diagnostics.xml",
+        "lib/net8.0/Avalonia.Diagnostics.dll",
+        "lib/net8.0/Avalonia.Diagnostics.xml",
+        "lib/netstandard2.0/Avalonia.Diagnostics.dll",
+        "lib/netstandard2.0/Avalonia.Diagnostics.xml"
+      ]
+    },
     "Avalonia.Fonts.Inter/11.2.3": {
       "sha512": "ConIy0i4S5xuWwYMihJt+0VVIFS1NqXtMzG7XYFO/L786P9qXlQBnHHuLt4kdw5kvJtZEhgii9E+/W7b35wtoQ==",
       "type": "package",
@@ -1039,6 +794,24 @@
         "lib/net8.0/Avalonia.Themes.Fluent.xml",
         "lib/netstandard2.0/Avalonia.Themes.Fluent.dll",
         "lib/netstandard2.0/Avalonia.Themes.Fluent.xml"
+      ]
+    },
+    "Avalonia.Themes.Simple/11.2.3": {
+      "sha512": "Okio7RYUHUk1m/1n6VGrkoq0C3Y3J6RwtrTGEfXPkYMJsL6yPqstJZMYkMFQPISUr8TYUNVKv82hL1qLRw7hwA==",
+      "type": "package",
+      "path": "avalonia.themes.simple/11.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avalonia.themes.simple.11.2.3.nupkg.sha512",
+        "avalonia.themes.simple.nuspec",
+        "lib/net6.0/Avalonia.Themes.Simple.dll",
+        "lib/net6.0/Avalonia.Themes.Simple.xml",
+        "lib/net8.0/Avalonia.Themes.Simple.dll",
+        "lib/net8.0/Avalonia.Themes.Simple.xml",
+        "lib/netstandard2.0/Avalonia.Themes.Simple.dll",
+        "lib/netstandard2.0/Avalonia.Themes.Simple.xml"
       ]
     },
     "CommunityToolkit.Mvvm/8.4.0": {
@@ -1455,6 +1228,7 @@
     "net8.0": [
       "Aspose.Imaging >= 24.12.0",
       "Avalonia >= 11.2.3",
+      "Avalonia.Diagnostics >= 11.2.3",
       "Avalonia.Fonts.Inter >= 11.2.3",
       "Avalonia.Themes.Fluent >= 11.2.3",
       "CommunityToolkit.Mvvm >= 8.4.0",
@@ -1510,6 +1284,10 @@
             "target": "Package",
             "version": "[11.2.3, )"
           },
+          "Avalonia.Diagnostics": {
+            "target": "Package",
+            "version": "[11.2.3, )"
+          },
           "Avalonia.Fonts.Inter": {
             "target": "Package",
             "version": "[11.2.3, )"
@@ -1558,14 +1336,6 @@
           {
             "name": "Microsoft.AspNetCore.App.Ref",
             "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
-            "version": "[8.0.11, 8.0.11]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Runtime.linux-x64",
-            "version": "[8.0.11, 8.0.11]"
           }
         ],
         "frameworkReferences": {
@@ -1574,11 +1344,6 @@
           }
         },
         "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
-      }
-    },
-    "runtimes": {
-      "linux-x64": {
-        "#import": []
       }
     }
   }

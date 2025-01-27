@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("antiMindblock.Browser")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+477d05e7077a0647aee19a879dac841b520ec226")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8009e3d834ec542ca3151df3082db6fd59b80fd3")]
 [assembly: System.Reflection.AssemblyProductAttribute("antiMindblock.Browser")]
 [assembly: System.Reflection.AssemblyTitleAttribute("antiMindblock.Browser")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
