@@ -83,17 +83,17 @@
                                         <Button Grid.Row="2" Grid.Column="2" Click="FlipSkinManually">
                                                 Flip/unflip skin
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="3" Click="FlipTabletAreaStandalone">
+                                        <!--<Button Grid.Row="2" Grid.Column="3" Click="FlipTabletArea">
                                                 Flip tablet
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletAreaStandalone">
+                                        <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletArea">
                                                 Unflip tablet
-                                        </Button>
+                                        </Button>-->
                                         
                                         <TextBlock Grid.Row="1" x:Name="FolderPathTextBlockMisc" Text="No skin selected." Grid.ColumnSpan="9" />
                                 </Grid>
                         </TabItem>
-                        <TabItem Header="lazer">
+                        <!--<TabItem Header="lazer">
                                 <Grid ColumnDefinitions="Auto, auto, auto, auto, auto, auto, auto, auto, 400">
                                         <Grid.RowDefinitions>
                                                 <RowDefinition Height="40" />
@@ -105,7 +105,7 @@
                                         <Button Grid.Row="0" Grid.Column="2" Click="EditLazer_Click">Flip with exported skin</Button>
                                         <Button Grid.Row="0" Grid.Column="3" Click="UndoLazer_Click">Unflip with exported skin</Button>
                                 </Grid>
-                        </TabItem>
+                        </TabItem>-->
                 </TabControl>
         </StackPanel>
 </Window>

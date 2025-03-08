@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("antiMindblock.iOS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9436e04160613ac0e2f4c14de840366e29ea6e6c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ba1562014751a258af09f9e9c26c29305c0cc502")]
 [assembly: System.Reflection.AssemblyProductAttribute("antiMindblock.iOS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("antiMindblock.iOS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
