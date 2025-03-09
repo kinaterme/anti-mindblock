@@ -102,8 +102,6 @@ namespace antiMindblock.LinuxOS
                 linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle@2x.png"));
                 linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay.png"));
                 linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay@2x.png"));
-                linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow.png"));
-                linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow@2x.png"));
                 linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle.png"));
                 linuxAssetFlipper.AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle@2x.png"));
 

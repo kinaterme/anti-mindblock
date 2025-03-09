@@ -138,7 +138,7 @@ public partial class MainWindow : Avalonia.Controls.Window
     
     private async void FolderPickerButton_Click(object sender, RoutedEventArgs e)
     {
-        if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             linuxFolderPickerButton linuxFolderPickerButton = new linuxFolderPickerButton(this);
             linuxFolderPickerButton.FolderPickerButton();
