@@ -8,7 +8,7 @@ namespace antiMindblock.LinuxOS
 {
     public class linuxFlipTabletArea
     {
-        public static void FlipTabletArea(double newRotationValue)
+        public void FlipTabletArea(double newRotationValue)
         {
             string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             string filePath = Path.Combine(homeDirectory, ".config/OpenTabletDriver/settings.json");
