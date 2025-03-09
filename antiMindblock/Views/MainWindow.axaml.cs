@@ -19,6 +19,7 @@ using MsBox.Avalonia.Enums;
 using System.Linq.Expressions;
 using Avalonia.Controls.Documents;
 using System.Transactions;
+using antiMindblock.LinuxOS;
 
 namespace antiMindblock.Views;
 
@@ -34,657 +35,66 @@ public partial class MainWindow : Avalonia.Controls.Window
                 var result = await box.ShowAsync();
     }
 
-    private string skinName;
+    public string skinName;
     public MainWindow()
     {
         InitializeComponent();
         
-        // if running from source detected:
-        string binaryPath = Path.GetDirectoryName(Environment.ProcessPath);
-        string appimageOrSourceCheck = Path.Combine(binaryPath, "button.png");
-        string copyImagesIfSource = Path.Combine(binaryPath, "*.png");
-        string quotedcopyImagesIfSource = $"\"{copyImagesIfSource}\"";
-        string quotedappimageOrSourceCheck = $"\"{appimageOrSourceCheck}\"";
-        if (binaryPath == null)
-        {
-            Console.WriteLine("Failed to determine the AppImage directory.");
-            return;
-        }
+        Width = 550;
+        Height = 300;
 
-        string binaryFileName = Path.GetFileName(Environment.ProcessPath);
-        if (string.IsNullOrEmpty(binaryFileName))
-        {
-            Console.WriteLine("Failed to determine the AppImage filename.");
-            return;
-        }
-
-        string fullbinaryPath = Path.Combine(binaryPath, binaryFileName);
-
-        if (File.Exists(Path.Combine(binaryPath, "button.png"))) 
-        {
-            Directory.Delete("/tmp/squashfs-root/", true);
-            Directory.CreateDirectory("/tmp/squashfs-root/");
-            RunShellCommand($"cp -r {quotedcopyImagesIfSource} '/tmp/squashfs-root/'");
-        }
-
-        // If appimage gets detected:
-        string appImageOriginalPath = Environment.GetEnvironmentVariable("APPIMAGE");
-        if (string.IsNullOrEmpty(appImageOriginalPath))
-        {
-            Console.WriteLine("Failed to determine the original AppImage path. \n Running from source. \n If you're running the AppImage build, \n $APPIMAGE might not be set!");
-            return;
-        }
-
-        Console.WriteLine($"AppImage Path: {appImageOriginalPath}");
-
-        string appImageDirectory = Path.GetDirectoryName(appImageOriginalPath);
-        string appImageFileName = Path.GetFileName(appImageOriginalPath);
-
-        if (appImageDirectory == null || appImageFileName == null)
-        {
-            Console.WriteLine("Failed to parse the AppImage path.");
-            return;
-        }
-
-        Process extractProcess = new Process
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = "bash",
-                Arguments = $"-c \"./{appImageFileName} --appimage-extract\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = appImageDirectory
-            }
-        };
-
-        try
-        {
-            if (!File.Exists("/tmp/squashfs-root/button.png"))
-            {
-                extractProcess.Start();
-                string output = extractProcess.StandardOutput.ReadToEnd();
-                string error = extractProcess.StandardError.ReadToEnd();
-                extractProcess.WaitForExit();
-
-                if (!string.IsNullOrEmpty(error))
-                {
-                    Console.WriteLine("Extraction Error:");
-                    Console.WriteLine(error);
-                }
-
-                string extractedFolder = Path.Combine(appImageDirectory, "squashfs-root");
-                string tmpFolder = Path.Combine("/tmp", "squashfs-root");
-
-                if (Directory.Exists(extractedFolder))
-                {
-                    if (Directory.Exists(tmpFolder))
-                    {
-                        Directory.Delete(tmpFolder, true);
-                    }
-
-                    RunShellCommand($"cp -r {extractedFolder} {tmpFolder}");
-                    Console.WriteLine($"Moved extracted folder to {tmpFolder}");
-                    Directory.Delete(Path.Combine(appImageDirectory, "squashfs-root"), true);
-                }
-                else
-                {
-                    Console.WriteLine("The extracted folder 'squashfs-root' was not found.");
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred: {ex.Message}");
-        }
-
-        this.Width = 550;
-        this.Height = 300;
-
-        var xdotoolcheck = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = "-c \"xdotool\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        var scrotcheck = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = "-c \"scrot --help\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        var wmctrlcheck = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = "-c \"wmctrl -m\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        using (var process = new Process { StartInfo = xdotoolcheck })
-        {
-            process.Start();
-
-            // Read the output and error streams
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-
-            process.WaitForExit();
-
-            // Check if there is an error output
-            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: xdotool:"))
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("xdotool");
-            }
-            else if (!string.IsNullOrWhiteSpace(output))
-            {
-                Console.WriteLine("xdotool check: Installed");
-            }
-            else
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("xdotool");
-            }
-        }
-
-        using (var process = new Process { StartInfo = scrotcheck })
-        {
-            process.Start();
-
-            // Read the output and error streams
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-
-            process.WaitForExit();
-
-            // Check if there is an error output
-            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: scrot:"))
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("scrot");
-            }
-            else if (!string.IsNullOrWhiteSpace(output))
-            {
-                Console.WriteLine("scrot check: Installed");
-            }
-            else
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("scrot");
-            }
-        }
-
-        using (var process = new Process { StartInfo = wmctrlcheck })
-        {
-            process.Start();
-
-            // Read the output and error streams
-            string output = process.StandardOutput.ReadToEnd();
-            string error = process.StandardError.ReadToEnd();
-
-            process.WaitForExit();
-
-            // Check if there is an error output
-            if (!string.IsNullOrWhiteSpace(error) && error.Contains("bash: wmctrl:"))
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("wmctrl");
-            }
-            else if (!string.IsNullOrWhiteSpace(output))
-            {
-                Console.WriteLine("wmctrl check: Installed");
-            }
-            else
-            {
-                this.Opened += async (sender, args) => await ShowMessageBoxAsync("wmctrl");
-            }
-        }
-
-
+        linuxInit linuxinit = new linuxInit(this);
+        linuxinit.Init();
     }
-
+    
     public void Flipping_Click(object sender, RoutedEventArgs args)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            Console.WriteLine("Running on Windows");
-        }
+        if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxFlipping.Flipping();
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            Console.WriteLine("Running on macOS");
-        }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            static void GatherOutputs()
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo()
-                {
-                    FileName = "xrandr",
-                    Arguments = "",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                using (Process process = Process.Start(startInfo))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-
-                        //Console.WriteLine("outputs:\n" + result);
-
-                        ParseXrandrOutput(result);
-                    }
-                }
-            }
-
-            GatherOutputs();
-
-            static void ParseXrandrOutput(string xrandrOutput)
-            {
-                string[] lines = xrandrOutput.Split('\n');
-
-                foreach (string line in lines)
-                {
-                    if (line.Contains("connected primary") && !line.Contains("disconnected"))
-                    {
-                        string outputName = line.Split(' ')[0];
-                        string flipCommand = $"xrandr --output {outputName} --rotate inverted";
-                        Process process = new Process();
-
-                        process.StartInfo.FileName = "/bin/bash";
-                        process.StartInfo.Arguments = $"-c \"{flipCommand}\"";
-                        process.StartInfo.UseShellExecute = false;
-                        process.StartInfo.CreateNoWindow = true;
-
-                        process.Start();
-                        process.WaitForExit();
-                    }
-                }
-            }
-        }
-
-
-        else
-        {
-            Console.WriteLine("Unknown operating system");
-        }
+            return;
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
     public void Unflipping_Click(object sender, RoutedEventArgs args)
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        {
-            Console.WriteLine("Running on Windows");
-        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxUnflipping.Unflipping();
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        {
-            Console.WriteLine("Running on macOS");
-        }
-        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        {
-            static void GatherOutputs()
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo()
-                {
-                    FileName = "xrandr",
-                    Arguments = "",
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true
-                };
-
-                using (Process process = Process.Start(startInfo))
-                {
-                    using (StreamReader reader = process.StandardOutput)
-                    {
-                        string result = reader.ReadToEnd();
-
-                        //Console.WriteLine("outputs:\n" + result);
-
-                        ParseXrandrOutput(result);
-                    }
-                }
-            }
-
-            GatherOutputs();
-
-            static void ParseXrandrOutput(string xrandrOutput)
-            {
-                string[] lines = xrandrOutput.Split('\n');
-
-                foreach (string line in lines)
-                {
-                    if (line.Contains("connected primary") && !line.Contains("disconnected"))
-                    {
-                        string outputName = line.Split(' ')[0];
-                        string unflipCommand = $"xrandr --output {outputName} --rotate normal";
-                        Process process = new Process();
-
-                        process.StartInfo.FileName = "/bin/bash";
-                        process.StartInfo.Arguments = $"-c \"{unflipCommand}\"";
-                        process.StartInfo.UseShellExecute = false;
-                        process.StartInfo.CreateNoWindow = true;
-
-                        process.Start();
-                        process.WaitForExit();
-                    }
-                }
-            }
-        }
+            return;
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
-
+    
     public void GetAndEditSkinFolder(object sender, RoutedEventArgs args)
     {
-        try
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Console.WriteLine("Button clicked - Starting process check");
-
-            string targetExecutable = "osu!/osu!.exe";
-
-            Process[] allProcesses = Process.GetProcesses();
-            Console.WriteLine($"Found {allProcesses.Length} processes");
-
-            foreach (Process proc in allProcesses)
-            {
-                try
-                {
-                    string cmdLine = GetProcessCommandLine(proc);
-
-                    // DEBUG OF PROCESSES: Console.WriteLine($"Process: {proc.ProcessName}, CmdLine: {cmdLine}");
-
-                    if (!string.IsNullOrEmpty(cmdLine) && cmdLine.ToLower().Contains(targetExecutable.ToLower()))
-                    {
-                        Console.WriteLine($"Found osu!.exe running under Wine with Process ID: {proc.Id}");
-
-                        // Extract the directory where osu!.exe is located
-                        string executablePath = ExtractExecutablePath(cmdLine);
-                        Console.WriteLine($"Executable Path: {executablePath}");
-
-                        if (Directory.Exists(executablePath))
-                        {
-                            // Search for the osu! cfg file in the executable's directory
-                            string configFilePattern = "osu!.*.cfg";
-                            string[] configFiles = Directory.GetFiles(executablePath, configFilePattern);
-
-                            if (configFiles.Length > 0)
-                            {
-                                string configFile = configFiles.FirstOrDefault();
-                                Console.WriteLine($"Config File Found: {configFile}");
-
-                                string[] configLines = File.ReadAllLines(configFile);
-                                string skinName = GetSkinNameFromConfig(configLines);
-                                Console.WriteLine($"Skin Name: {skinName}");
-
-                                if (!string.IsNullOrEmpty(skinName))
-                                {
-                                    string skinsDirectory = Path.Combine(executablePath, "Skins");
-
-                                    if (Directory.Exists(skinsDirectory))
-                                    {
-                                        string targetSkinFolder = Path.Combine(skinsDirectory, skinName);
-
-                                        if (Directory.Exists(targetSkinFolder))
-                                        {
-                                            Console.WriteLine($"Skin folder found: {targetSkinFolder}");
-
-                                            OpenAndEditSkin(targetSkinFolder);
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine($"Skin folder not found: {targetSkinFolder}");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Skins directory does not exist.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("No Skin setting found in the config file.");
-                                }
-                            }
-                            else
-                            {
-                                Console.WriteLine("No config file found with pattern osu!.*.cfg");
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Executable directory does not exist");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Could not access process: {proc.ProcessName}, {ex.Message}");
-                }
-            }
-
-            Console.WriteLine("Process check completed");
+            linuxGetAndEditSkinFolder linuxGetAndEditSkinFolder = new linuxGetAndEditSkinFolder(this);
+            linuxGetAndEditSkinFolder.GetAndEditSkinFolder();    
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error in GetAndEditSkinFolder: {ex.Message}");
-        }
-    }
-
-    // Method to get the command line of a process
-    public string GetProcessCommandLine(Process process)
-    {
-        try
-        {
-            string procFilePath = $"/proc/{process.Id}/cmdline";
-            return File.ReadAllText(procFilePath).Replace('\0', ' ');
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    // Method to extract the directory from the command line of osu!.exe
-    public string ExtractExecutablePath(string cmdLine)
-    {
-        string[] parts = cmdLine.Split(' ');
-        string executableFullPath = parts[4];
-        string unixStylePath = ConvertWinePathToUnix(executableFullPath);
-        return Path.GetDirectoryName(unixStylePath);
-    }
-
-    // Method to convert Wine paths to Unix paths
-    public string ConvertWinePathToUnix(string windowsPath)
-    {
-        if (windowsPath.StartsWith("Z:\\"))
-        {
-            string unixPath = windowsPath.Replace("Z:\\", "/").Replace('\\', '/');
-            return unixPath;
-        }
-        return windowsPath;
-    }
-
-    // Method to find the Skin line in the config file and extract the skin name
-    public string GetSkinNameFromConfig(string[] configLines)
-    {
-        foreach (string line in configLines)
-        {
-            if (line.StartsWith("Skin = "))
-            {
-                return line.Substring(7).Trim();
-            }
-        }
-        return null;
-    }
-
-    public void SkinFetcher()
-    {
-        try
-        {
-            Console.WriteLine("Button clicked - Starting process check");
-
-            string targetExecutable = "osu!/osu!.exe";
-
-            // Get all running processes
-            Process[] allProcesses = Process.GetProcesses();
-            Console.WriteLine($"Found {allProcesses.Length} processes");
-
-            foreach (Process proc in allProcesses)
-            {
-                try
-                {
-                    string cmdLine = GetProcessCommandLine(proc);
-
-                    // DEBUG OF PROCESSES: Console.WriteLine($"Process: {proc.ProcessName}, CmdLine: {cmdLine}");
-
-                    if (!string.IsNullOrEmpty(cmdLine) && cmdLine.ToLower().Contains(targetExecutable.ToLower()))
-                    {
-                        Console.WriteLine($"Found osu!.exe running under Wine with Process ID: {proc.Id}");
-
-                        // Extract the directory where osu!.exe is located
-                        string executablePath = ExtractExecutablePath(cmdLine);
-                        Console.WriteLine($"Executable Path: {executablePath}");
-
-                        if (Directory.Exists(executablePath))
-                        {
-                            // Search for the osu! cfg file in the executable's directory
-                            string configFilePattern = "osu!.*.cfg";
-                            string[] configFiles = Directory.GetFiles(executablePath, configFilePattern);
-
-                            if (configFiles.Length > 0)
-                            {
-                                string configFile = configFiles.FirstOrDefault();
-                                Console.WriteLine($"Config File Found: {configFile}");
-
-                                // Read the content of the config file
-                                string[] configLines = File.ReadAllLines(configFile);
-                                string skinName = GetSkinNameFromConfig(configLines);
-                                Console.WriteLine(skinName);
-                                AutoDetectSkinLabel.Text = $"Skin detected: {skinName}";
-                            }
-                        }
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
-            }
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex);
-        }
-    }
-
-    public void AssetFlipper(string imagePathAr) 
-    {
-        try
-        {
-            // Create the full path to the image
-            string imagePath = imagePathAr;
-
-            using (var input = File.OpenRead(imagePath))
-            using (var originalBitmap = SKBitmap.Decode(input))
-            {
-                // Create a new bitmap with the same dimensions
-                var rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
-
-                // Rotation
-                using (var canvas = new SKCanvas(rotatedBitmap))
-                {
-                    canvas.Clear(SKColors.Transparent);
-                    canvas.Translate(originalBitmap.Width / 2, originalBitmap.Height / 2);
-                    canvas.RotateDegrees(180);
-                    canvas.Translate(-originalBitmap.Width / 2, -originalBitmap.Height / 2);
-                    canvas.DrawBitmap(originalBitmap, SKRect.Create(originalBitmap.Width, originalBitmap.Height));
-                }
-
-                // Save the rotated image
-                string rotatedImagePath = imagePathAr;
-                using (var output = File.OpenWrite(rotatedImagePath))
-                {
-                    rotatedBitmap.Encode(output, SKEncodedImageFormat.Png, 100);
-                }
-
-                Console.WriteLine($"Rotated image saved to: {rotatedImagePath}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error rotating image: {ex.Message}");
-        }
-    }
-    public void OpenAndEditSkin(string folderPath)
-    {
-        string quotedPath = $"\"{folderPath}\"";
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-1.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-1@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-2.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-2@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-3.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-3@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-4.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-4@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-5.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-5@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-6.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-6@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-7.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-7@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-8.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-8@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursor.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortrail.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortail.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle@2x.png"));
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
     public void DoAll_Click(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 180.0);
+        // Cross-platform solution is already provided in each method,
+        // don't add it here.
+        FlipTabletArea(sender, args);
         Flipping_Click(sender, args);
         GetAndEditSkinFolder(sender, args);
         FocusAndRefresh(sender, args);
     }
     public void UndoAll_Click(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 0.0);
+        // Cross-platform solution is already provided in each method,
+        // don't add it here.
+        UnflipTabletArea(sender, args);
         Unflipping_Click(sender, args);
         GetAndEditSkinFolder(sender, args);
         FocusAndRefresh(sender, args);
@@ -692,751 +102,150 @@ public partial class MainWindow : Avalonia.Controls.Window
 
     public void FocusAndRefresh(object sender, RoutedEventArgs args)
     {
-        string command = "wmctrl -R 'osu!'";
-
-        ProcessStartInfo startInfo = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = $"-c \"{command}\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        Process.Start(startInfo);
-        Thread.Sleep(1050);
-        string refreshSkin = "xdotool key ctrl+alt+shift+s";
-
-        ProcessStartInfo refreshS = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = $"-c \"{refreshSkin}\"",
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        Process.Start(refreshS);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxFocusAndRefresh.FocusAndRefresh();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
-    public void FlipTabletArea(object sender, RoutedEventArgs args, double newRotationValue)
+    linuxFlipTabletArea linuxFlipTabletArea = new linuxFlipTabletArea();
+    public void FlipTabletArea(object sender, RoutedEventArgs args)
     {
-        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string filePath = Path.Combine(homeDirectory, ".config/OpenTabletDriver/settings.json");
-
-        try
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            string jsonString = File.ReadAllText(filePath);
-
-            using (JsonDocument doc = JsonDocument.Parse(jsonString))
-            {
-                JsonObject root = JsonSerializer.Deserialize<JsonObject>(jsonString);
-
-                var profiles = root["Profiles"] as JsonArray;
-
-                if (profiles != null && profiles.Count > 0)
-                {
-                    var firstProfile = profiles[0] as JsonObject;
-                    if (firstProfile != null)
-                    {
-                        var absoluteModeSettings = firstProfile["AbsoluteModeSettings"] as JsonObject;
-                        var tabletSettings = absoluteModeSettings?["Tablet"] as JsonObject;
-
-                        if (tabletSettings != null)
-                        {
-                            tabletSettings["Rotation"] = JsonValue.Create(newRotationValue);
-
-                            string updatedJsonString = JsonSerializer.Serialize(root, new JsonSerializerOptions { WriteIndented = true });
-
-                            File.WriteAllText(filePath, updatedJsonString);
-
-                            Console.WriteLine("Rotation value updated successfully.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Tablet settings not found.");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Profile not found.");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Profiles array is empty or not found.");
-                }
-            }
+            linuxFlipTabletArea.FlipTabletArea(180.0);
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-        }
-
-        string command = "systemctl --user restart opentabletdriver";
-
-        ProcessStartInfo startInfo = new ProcessStartInfo
-        {
-            FileName = "bash",
-            Arguments = $"-c \"{command}\"",
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-
-        Process.Start(startInfo);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
-    public void FlipTabletAreaStandalone(object sender, RoutedEventArgs args)
+    public void UnflipTabletArea(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 180.0);
-    }
-    public void UnflipTabletAreaStandalone(object sender, RoutedEventArgs args)
-    {
-        FlipTabletArea(sender, args, 0.0);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxFlipTabletArea.FlipTabletArea(0.0);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return; 
     }
 
-    private string selectedFolderPath;
+    public string selectedFolderPath;
 
+    
     private async void FolderPickerButton_Click(object sender, RoutedEventArgs e)
     {
-        var dialog = new OpenFolderDialog
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Title = "Select a folder"
-        };
-
-        string result = await dialog.ShowAsync(this);
-
-        if (!string.IsNullOrEmpty(result))
-        {
-            selectedFolderPath = result;
-
-            FolderPathTextBlock.Text = $"Selected Folder: {selectedFolderPath}";
-            FolderPathTextBlockMisc.Text = $"Selected Folder: {selectedFolderPath}";
-        }
-        else
-        {
-            FolderPathTextBlock.Text = "No skin selected.";
-            FolderPathTextBlockMisc.Text = "No skin selected.";
+            linuxFolderPickerButton linuxFolderPickerButton = new linuxFolderPickerButton(this);
+            linuxFolderPickerButton.FolderPickerButton();
         }
     }
-
+    
     public void FlipSkinManually(object sender, RoutedEventArgs args)
     {
-        string quotedPath = $"\"{selectedFolderPath}\"";
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-1.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-1@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-2.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-2@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-3.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-3@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-4.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-4@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-5.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-5@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-6.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-6@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-7.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-7@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-8.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-8@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-9@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "default-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursor.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortrail.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "cursortail.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit50-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hit100k-0@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircle@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "hitcircleoverlay@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "reversearrow@2x.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle.png"));
-        AssetFlipper(Path.Combine(quotedPath.Trim('"'), "sliderfollowcircle@2x.png"));
+        
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            linuxFlipSkinManually linuxFlipSkinManually = new linuxFlipSkinManually(this);
+            linuxFlipSkinManually.FlipSkinManually();
+        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
 
     public void AutoDetectSkinInfo(object sender, RoutedEventArgs args)
     {
-        SkinFetcher();
-        Console.WriteLine(skinName);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            linuxAutoDetectSkinInfo linuxAutoDetectSkinInfo = new linuxAutoDetectSkinInfo(this);
+            linuxAutoDetectSkinInfo.AutoDetectSkinInfo();
+        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
+
+        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
+
+        }
+        
     }
 
     public void DoAllManual_Click(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 180.0);
+        // Cross-platform solution is already provided in each method,
+        // don't add it here.
+        FlipTabletArea(sender, args);
         Flipping_Click(sender, args);
         FlipSkinManually(sender, args);
         FocusAndRefresh(sender, args);
     }
     public void UndoAllManual_Click(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 0.0);
+        // Cross-platform solution is already provided in each method,
+        // don't add it here.
+        UnflipTabletArea(sender, args);
         Unflipping_Click(sender, args);
         FlipSkinManually(sender, args);
         FocusAndRefresh(sender, args);
     }
-    public void ExportLazerSkin(object sender, RoutedEventArgs args)
+
+    public void DeleteLazerSkin()
     {
-        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string lazerDefaultExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
-        string lazerExportDirectoryCleanup = Path.Combine(homeDirectory, ".local/share/osu/backupmindblock");
-        string quotedExportDirectoryCleanup = $"\"{lazerExportDirectoryCleanup}\"";
-        string everyFileInDirectory = Path.Combine(lazerExportDirectoryCleanup, "*");
-        string everyReplayInDefaultDirectory = Path.Combine(lazerDefaultExportDirectory, "*.osr");
-        string everyFileInDefaultDirectory = Path.Combine(lazerDefaultExportDirectory, "*");
-        if (Directory.Exists($"{lazerExportDirectoryCleanup}"))
-        {
-            Console.WriteLine("Export directory exists.");
-        }
-        else 
-        {
-            RunShellCommand($"mkdir {quotedExportDirectoryCleanup}");
-        }
-        RunShellCommand($"mv {everyReplayInDefaultDirectory} {lazerExportDirectoryCleanup}");
-        RunShellCommand($"cd {lazerDefaultExportDirectory} && rm -rf {everyFileInDefaultDirectory}");
-        Thread.Sleep(500);
-        RunShellCommand("wmctrl -R 'osu!'");
-        Task.Delay(2000).GetAwaiter().GetResult();
-        File.Delete("/tmp/screenshot.png");
-
-        RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
-
-        Task.Delay(1500).GetAwaiter().GetResult();
-
-        RunShellCommand("xdotool type 'export skin'");
-        Thread.Sleep(2000);
-
-        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/button.png", 0.50);
-        if (buttonLocation != null)
-        {
-            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
-            Thread.Sleep(500);
-            DeleteLazerSkin(sender, args);
-        }
-        else
-        {
-            Console.WriteLine("Button not found!");
-        }
-
-    RunShellCommand("xdotool key Escape");
-    RunShellCommand("xdotool key Escape");
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxDeleteLazerSkin.DeleteLazerSkin();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
-
-    public void DeleteLazerSkin(object sender, RoutedEventArgs args)
+    
+    linuxEditLazerSkin linuxEditLazerSkin = new linuxEditLazerSkin();
+    public void EditLazerSkin()
     {
-        RunShellCommand("wmctrl -R 'osu!'");
-        Task.Delay(2000).GetAwaiter().GetResult();
-        File.Delete("/tmp/screenshot.png");
-
-        RunShellCommand("xdotool keydown ctrl key 38 keyup ctrl");
-
-        Task.Delay(1500).GetAwaiter().GetResult();
-
-        RunShellCommand("xdotool type 'delete skin'");
-        RunShellCommand("xdotool mousemove 1 1");
-        Thread.Sleep(2000);
-
-        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
-        if (buttonLocation != null)
-        {
-            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
-        }
-        else
-        {
-            Console.WriteLine("Button not found!");
-        }
-
-        File.Delete("/tmp/screenshot.png");
-        Thread.Sleep(1000);
-
-        var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
-        if (confirmationButtonLocation != null)
-        {
-            RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
-            Thread.Sleep(3000);
-            RunShellCommand($"xdotool mouseup 1");
-        }
-        else
-        {
-            Console.WriteLine("Button not found!");
-        }
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxEditLazerSkin.EditLazerSkin();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
-
-    static System.Drawing.Point? FindImageOnScreen(string imagePath, double confidence)
+    
+    linuxUndoEditsLazerSkin linuxUndoEditsLazerSkin = new linuxUndoEditsLazerSkin();
+    public void UndoEditsLazerSkin()
     {
-        RunShellCommand("scrot /tmp/screenshot.png");
-
-        using var screenshot = new Mat("/tmp/screenshot.png", ImreadModes.Grayscale);
-        using var template = new Mat(imagePath, ImreadModes.Grayscale);
-
-        using var result = new Mat();
-        Cv2.MatchTemplate(screenshot, template, result, TemplateMatchModes.CCoeffNormed);
-
-        Cv2.MinMaxLoc(result, out _, out double maxVal, out _, out OpenCvSharp.Point maxLoc);
-
-        if (maxVal >= confidence)
-        {
-            return new System.Drawing.Point(maxLoc.X + template.Width / 2, maxLoc.Y + template.Height / 2);
-        }
-
-        return null;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxUndoEditsLazerSkin.UndoEditsLazerSkin();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
-
-    static void RunShellCommand(string command)
-    {
-        var processInfo = new ProcessStartInfo("bash", $"-c \"{command}\"")
-        {
-            RedirectStandardOutput = true,
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
-        var process = Process.Start(processInfo);
-        process.WaitForExit();
-    }
-
-    public void EditLazerSkin(object sender, RoutedEventArgs args)
-    {
-        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string osuLazerExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
-        string osuLazerExportedSkinPath = Path.Combine(osuLazerExportDirectory, "*.osk");
-        string quotedOsuLazerExportedSkinPath = $"\"{osuLazerExportedSkinPath}\"";
-        string osuLazerExtractedSkinFolder = Path.Combine(osuLazerExportDirectory, "rotated");
-        string quotedOsuLazerExtractedSkinFolder = $"\"{osuLazerExtractedSkinFolder}\"";
-        string unzipCommand = $"unzip -o {quotedOsuLazerExportedSkinPath} -d {quotedOsuLazerExtractedSkinFolder}";
-        string zipCommand = $"cd {quotedOsuLazerExtractedSkinFolder} && zip -r ../rotated.osk *";
-        Console.WriteLine(quotedOsuLazerExportedSkinPath);
-
-        if (Directory.Exists(osuLazerExtractedSkinFolder))
-        {
-            RunShellCommand("wmctrl -R 'osu!'");
-            Task.Delay(2000).GetAwaiter().GetResult();
-            File.Delete("/tmp/screenshot.png");
-
-            RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
-
-            Task.Delay(1500).GetAwaiter().GetResult();
-
-            RunShellCommand("xdotool type 'delete skin'");
-            RunShellCommand("xdotool mousemove 1 1");
-            Thread.Sleep(2000);
-
-            var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
-            if (buttonLocation != null)
-            {
-                RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
-            }
-            else
-            {
-                Console.WriteLine("Button not found!");
-            }
-
-            File.Delete("/tmp/screenshot.png");
-            Thread.Sleep(1000);
-
-            var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
-            if (confirmationButtonLocation != null)
-            {
-                RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
-                Thread.Sleep(2500);
-                RunShellCommand($"xdotool mouseup 1");
-            }
-            else
-            {
-                Console.WriteLine("Button not found!");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Already exported");
-        }
-
-        if (Directory.Exists(osuLazerExportDirectory))
-        {            
-            var unzipProcessInfo = new ProcessStartInfo("bash", $"-c \"{unzipCommand}\"")
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            var unzipProcess = Process.Start(unzipProcessInfo);
-            unzipProcess.Start();
-            unzipProcess.WaitForExit();
-
-            Thread.Sleep(1100);
-
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursor.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortrail.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortail.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle@2x.png"));
-
-            Thread.Sleep(1100);
-
-            var zipProcessInfo = new ProcessStartInfo("bash", $"-c \"{zipCommand}\"")
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            var zipProcess = Process.Start(zipProcessInfo);
-            zipProcess.Start();
-            zipProcess.WaitForExit();
-
-            Thread.Sleep(100);
-
-            string keyword = "osu";
-            string excludeKeyword = "appimagelauncher";
-            string parameter = Path.Combine(osuLazerExportDirectory, "rotated.osk");
-
-            var appImagePath = FindRunningAppImage(keyword, excludeKeyword);
-
-            if (appImagePath != null)
-            {
-                RunAppImage(appImagePath, parameter);
-                Thread.Sleep(500);
-                RunShellCommand("wmctrl -R 'osu!'");
-            }
-            else
-            {
-                Console.WriteLine("No matching AppImage found.");
-            }
-            
-
-            static string FindRunningAppImage(string keyword, string excludeKeyword)
-            {
-                var processes = Process.GetProcesses();
-
-                foreach (var process in processes)
-                {
-                    try
-                    {
-                        var processName = process.MainModule.FileName;
-                        if (processName.Contains(keyword, StringComparison.OrdinalIgnoreCase) &&
-                            !processName.Contains(excludeKeyword, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return processName;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error accessing process: {ex.Message}");
-                    }
-                }
-
-                return null;
-            }
-
-            static void RunAppImage(string appImagePath, string parameter)
-            {
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = appImagePath,
-                    Arguments = parameter,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                };
-
-                using (var process = Process.Start(processStartInfo))
-                {
-                    process.WaitForExit();
-
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-
-                    Console.WriteLine($"Output: {output}");
-                    Console.WriteLine($"Error: {error}");
-                }
-            }
-
-            Thread.Sleep(1500);
-
-            File.Delete("/tmp/screenshot.png");
-            var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttonimported.png", 0.50);
-            if (buttonLocation != null)
-            {
-                RunShellCommand("wmctrl -R 'osu!'");
-                Thread.Sleep(100);
-                RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
-            }
-            else
-            {
-                Console.WriteLine("Button not found!");
-            }
-        }
-    }
-
-    public void UndoEditsLazerSkin(object sender, RoutedEventArgs args)
-    {
-        string homeDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        string osuLazerExportDirectory = Path.Combine(homeDirectory, ".local/share/osu/exports");
-        string osuLazerExportedSkinPath = Path.Combine(osuLazerExportDirectory, "*.osk");
-        string quotedOsuLazerExportedSkinPath = $"\"{osuLazerExportedSkinPath}\"";
-        string osuLazerExtractedSkinFolder = Path.Combine(osuLazerExportDirectory, "rotated");
-        string quotedOsuLazerExtractedSkinFolder = $"\"{osuLazerExtractedSkinFolder}\"";
-        string unzipCommand = $"unzip -o {quotedOsuLazerExportedSkinPath} -d {quotedOsuLazerExtractedSkinFolder}";
-        string zipCommand = $"cd {quotedOsuLazerExtractedSkinFolder} && zip -r ../rotated.osk *";
-        Console.WriteLine(quotedOsuLazerExportedSkinPath);
-
-        RunShellCommand("wmctrl -R 'osu!'");
-        Task.Delay(2000).GetAwaiter().GetResult();
-        File.Delete("/tmp/screenshot.png");
-
-        RunShellCommand("xdotool keydown ctrl key 32 keyup ctrl");
-
-        Task.Delay(1500).GetAwaiter().GetResult();
-
-        RunShellCommand("xdotool type 'delete skin'");
-        Thread.Sleep(2000);
-
-        var buttonLocation = FindImageOnScreen("/tmp/squashfs-root/buttondelete.png", 0.50);
-        if (buttonLocation != null)
-        {
-            RunShellCommand($"xdotool mousemove {buttonLocation.Value.X} {buttonLocation.Value.Y} click 1");
-        }
-        else
-        {
-            Console.WriteLine("Button not found!");
-        }
-
-        File.Delete("/tmp/screenshot.png");
-        Thread.Sleep(1000);
-
-        var confirmationButtonLocation = FindImageOnScreen("/tmp/squashfs-root/confirm.png", 0.50);
-        if (confirmationButtonLocation != null)
-        {
-            RunShellCommand($"xdotool mousemove {confirmationButtonLocation.Value.X} {confirmationButtonLocation.Value.Y} mousedown 1");
-            Thread.Sleep(3000);
-            RunShellCommand($"xdotool mouseup 1");
-        }
-        else
-        {
-            Console.WriteLine("Button not found!");
-        }
-
-        if (Directory.Exists(osuLazerExtractedSkinFolder))
-        {            
-            Thread.Sleep(1100);
-
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-1@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-2@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-3@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-4@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-5@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-6@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-7@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-8@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-9@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "default-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursor.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortrail.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "cursortail.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit50-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hit100k-0@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircle@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "hitcircleoverlay@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "reversearrow@2x.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle.png"));
-            AssetFlipper(Path.Combine(quotedOsuLazerExtractedSkinFolder.Trim('"'), "sliderfollowcircle@2x.png"));
-
-            Thread.Sleep(1100);
-
-            var zipProcessInfo = new ProcessStartInfo("bash", $"-c \"{zipCommand}\"")
-            {
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-            var zipProcess = Process.Start(zipProcessInfo);
-            zipProcess.Start();
-            zipProcess.WaitForExit();
-
-            Thread.Sleep(100);
-
-            string keyword = "osu";
-            string excludeKeyword = "appimagelauncher";
-            string parameter = Path.Combine(osuLazerExportDirectory, "rotated.osk");
-
-            var appImagePath = FindRunningAppImage(keyword, excludeKeyword);
-
-            if (appImagePath != null)
-            {
-                RunAppImage(appImagePath, parameter);
-                
-            }
-            else
-            {
-                Console.WriteLine("No matching AppImage found.");
-            }
-            
-
-            static string FindRunningAppImage(string keyword, string excludeKeyword)
-            {
-                var processes = Process.GetProcesses();
-
-                foreach (var process in processes)
-                {
-                    try
-                    {
-                        var processName = process.MainModule.FileName;
-                        if (processName.Contains(keyword, StringComparison.OrdinalIgnoreCase) &&
-                            !processName.Contains(excludeKeyword, StringComparison.OrdinalIgnoreCase))
-                        {
-                            return processName;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error accessing process: {ex.Message}");
-                    }
-                }
-
-                return null;
-            }
-
-            static void RunAppImage(string appImagePath, string parameter)
-            {
-                var processStartInfo = new ProcessStartInfo
-                {
-                    FileName = appImagePath,
-                    Arguments = parameter,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = true
-                };
-
-                using (var process = Process.Start(processStartInfo))
-                {
-                    process.WaitForExit();
-
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
-
-                    Console.WriteLine($"Output: {output}");
-                    Console.WriteLine($"Error: {error}");
-                }
-            }
-
-            Thread.Sleep(1000);
-
-            File.Delete("/tmp/screenshot.png");
-            var importButtonLocation = FindImageOnScreen("/tmp/squashfs-root/buttonimported.png", 0.50);
-            if (importButtonLocation != null)
-            {
-                RunShellCommand("wmctrl -R 'osu!'");
-                Thread.Sleep(100);
-                RunShellCommand($"xdotool mousemove {importButtonLocation.Value.X} {importButtonLocation.Value.Y} click 1");
-            }
-            else
-            {
-                Console.WriteLine("Button not found!");
-            }
-        
-        RunShellCommand("xdotool key Escape");
-        RunShellCommand("xdotool key Escape");
-        }
-    }
-
+    
+    linuxExportLazerSkin linuxExportLazerSkin = new linuxExportLazerSkin();
     public void ExportLazer_Click(object sender, RoutedEventArgs args)
     {
-        ExportLazerSkin(sender, args);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            linuxExportLazerSkin.ExportLazerSkin();
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            return;
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            return;
     }
-
     public void EditLazer_Click(object sender, RoutedEventArgs args)
     {
-        EditLazerSkin(sender, args);
-        FlipTabletArea(sender, args, 180.0);
-        Flipping_Click(sender, args);
+       EditLazerSkin();
+       FlipTabletArea(sender, args);
+       Flipping_Click(sender, args);
     }
-
     public void UndoLazer_Click(object sender, RoutedEventArgs args)
     {
-        FlipTabletArea(sender, args, 0.0);
-        UndoEditsLazerSkin(sender, args);
+        UnflipTabletArea(sender, args);
+        UndoEditsLazerSkin();
         Unflipping_Click(sender, args);
     }
 }

@@ -83,10 +83,10 @@
                                         <Button Grid.Row="2" Grid.Column="2" Click="FlipSkinManually">
                                                 Flip/unflip skin
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="3" Click="FlipTabletAreaStandalone">
+                                        <Button Grid.Row="2" Grid.Column="3" Click="FlipTabletArea">
                                                 Flip tablet
                                         </Button>
-                                        <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletAreaStandalone">
+                                        <Button Grid.Row="2" Grid.Column="4" Click="UnflipTabletArea">
                                                 Unflip tablet
                                         </Button>
                                         

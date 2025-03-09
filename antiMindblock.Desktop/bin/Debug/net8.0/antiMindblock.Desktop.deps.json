@@ -567,7 +567,10 @@
           "System.Drawing.Common": "9.0.1"
         },
         "runtime": {
-          "antiMindblock.dll": {}
+          "antiMindblock.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }

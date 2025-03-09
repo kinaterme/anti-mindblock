@@ -227,9 +227,9 @@
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.AssemblyInfo.cs
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.csproj.CoreCompileInputs.cache
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.sourcelink.json
-/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.csproj.CopyComplete
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.dll
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/refint/antiMindblock.Desktop.dll
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.pdb
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMindblock.Desktop.genruntimeconfig.cache
 /home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/ref/antiMindblock.Desktop.dll
+/home/jakub/Documents/anti-mindblock/antiMindblock.Desktop/obj/Debug/net8.0/antiMind.768F4946.Up2Date
