@@ -59,7 +59,7 @@
 ### Features
 * **Input flipping**: Supports flipping tablet and mouse input.
 * **Cross-platform**: Works on Windows, macOS, and Linux.
-* **Supports both clients**: Compatible with osu! (stable) and osu!lazer.
+* **Supports both clients**: Compatible with osu! (stable) and osu!(lazer).
 
 Interested? Jump to the <a href="#installation">installation instructions</a>.
 
