@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/kinaterme/anti-mindblock">
-    <img src="img/logo.png" alt="Logo" width="256" height="256">
+    <img src="img/logo_rounded.png" alt="Logo" width="256" height="256">
   </a>
   <h3 align="center">Anti Mindblock</h3>
 
