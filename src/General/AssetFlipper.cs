@@ -1,3 +1,4 @@
+using System.IO;
 using SkiaSharp;
 
 namespace antiMindblock
@@ -12,12 +13,10 @@ namespace antiMindblock
 
             using (var canvas = new SKCanvas(rotated))
             {
-                // Rotate around the center
                 canvas.Translate(bitmap.Width / 2f, bitmap.Height / 2f);
                 canvas.RotateDegrees(180);
+                
                 canvas.Translate(-bitmap.Width / 2f, -bitmap.Height / 2f);
-
-                // Draw the original bitmap
                 canvas.DrawBitmap(bitmap, 0, 0);
             }
 

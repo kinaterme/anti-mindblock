@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using Realms;
@@ -77,16 +78,16 @@ namespace antiMindblock
                 string skinID = sr.ReadLine();
                 skinID = skinID.Split(" = ")[1];
                 return Guid.Parse(skinID);
-            }
-            ;
+            };
         }
 
-        // construct path of hashed skin file
         public static string ConstructPath(string hash)
         {
-            string lazerPath = GetLazerPath();
-            string filesPath = Path.Combine(lazerPath, "files");
-            return "path";
+            // TODO: Make this return the actual path 
+            string filesPath = Path.Combine(GetLazerPath(), "files");
+            string constructedPath = hash.Substring(2).Split()[0];
+            
+            return constructedPath;
         }
     }
 }
