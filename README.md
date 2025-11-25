@@ -140,7 +140,7 @@ To compile Anti Mindblock from source, follow the steps below.
     - [ ] osu!(lazer)
   - [ ] Input flipping
   - [ ] Screen flipping
-    - [ ] x11
+    - [X] x11
     - [ ] Wayland
 
 <!--See the [open issues](https://github.com/kinaterme/anti-mindblock/issues) for a full list of proposed features (and known issues).-->
