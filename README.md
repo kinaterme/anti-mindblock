@@ -99,7 +99,7 @@ To compile Anti Mindblock from source, follow the steps below.
      ```
   5. Run the executable
      ```sh
-     .\bin\Release\net9.0\anti-mindblock
+     .\bin\Release\net9.0\anti-mindblock.exe
      ```
 #### Linux
   1. Install [.NET SDK 9](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
@@ -126,18 +126,18 @@ To compile Anti Mindblock from source, follow the steps below.
 - [ ] Windows
   - [ ] Skin flipping
     - [ ] osu!(stable)
-    - [ ] osu!(lazer)
+    - [X] osu!(lazer)
   - [ ] Input flipping
   - [ ] Screen flipping
 - [ ] macOS
   - [ ] Skin flipping
-    - [ ] osu!(lazer)
+    - [X] osu!(lazer)
   - [ ] Input flipping
   - [ ] Screen flipping
 - [ ] Linux
   - [ ] Skin flipping
     - [ ] osu!(stable)
-    - [ ] osu!(lazer)
+    - [X] osu!(lazer)
   - [ ] Input flipping
   - [ ] Screen flipping
     - [X] x11
