@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Realms;
 
@@ -81,13 +82,44 @@ namespace antiMindblock
             };
         }
 
-        public static string ConstructPath(string hash)
+       public static string ConstructFilePath(string hash)
         {
-            // TODO: Make this return the actual path 
-            string filesPath = Path.Combine(GetLazerPath(), "files");
-            string constructedPath = hash.Substring(2).Split()[0];
-            
+            string constructedPath = Path.Combine(GetLazerPath(), "files", $"{hash[0]}", hash.Substring(0, 2), hash);
             return constructedPath;
+        }
+
+        public static List<(string Filename, string? Hash)> GetCurrentSkinContents()
+        {
+            Guid currentSkinID = GetCurrentSkin();
+            List<(string SkinName, Guid SkinID, string Filename, string? Hash)> skins = GetLazerSkins();
+            List<(string Filename, string? Hash)> currentSkin = new List<(string Filename, string? Hash)>();
+
+            foreach (var skin in skins)
+            {
+                if (skin.SkinID == currentSkinID)
+                    currentSkin.Add((skin.Filename, skin.Hash));
+            }
+
+            return currentSkin;
+        }
+
+        public static string[] GetCurrentSkinFilePaths()
+        {
+            string[] paths = GetCurrentSkinContents()
+                .Select(x => ConstructFilePath(x.Hash ?? string.Empty))
+                .ToArray();
+
+            return paths;
+        }
+
+        public static void FlipCurrentSkin()
+        {
+            string[] skinFilePaths = GetCurrentSkinFilePaths();
+
+            foreach (string path in skinFilePaths)
+            {
+                AssetFlipper.Flip(path);
+            }
         }
     }
 }

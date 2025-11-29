@@ -34,17 +34,10 @@ public partial class MainWindow : Window
 
     public void BTN_GetCurrentLazerSkinContents(object sender, RoutedEventArgs args)
     {
-        Guid currentSkinID = Lazer.GetCurrentSkin();
-        List<(string SkinName, Guid SkinID, string Filename, string? Hash)> skins = Lazer.GetLazerSkins();
-        List<(string Filename, string? Hash)> currentSkin = new List<(string Filename, string? Hash)>();
-
-        foreach (var skin in skins)
-        {
-            if (skin.SkinID == currentSkinID)
-                currentSkin.Add((skin.Filename, skin.Hash));
-        }
+        List<(string Filename, string? Hash)> currentSkin = Lazer.GetCurrentSkinContents();
+        
         foreach (var file in currentSkin)
-            Console.WriteLine($"{file.Filename} | {file.Hash}");
+            Console.WriteLine($"{file.Filename} / {file.Hash}");
     }
 
     public void BTN_FlipAsset(object sender, RoutedEventArgs args)
@@ -63,5 +56,17 @@ public partial class MainWindow : Window
     public void BTN_RevertScreen(object sender, RoutedEventArgs args)
     {
         Screen.Flip(false);
+    }
+
+    public void BTN_PrintCurrentLazerSkinFilePaths(object sender, RoutedEventArgs args)
+    {
+        string[] paths = Lazer.GetCurrentSkinFilePaths();
+        foreach (string path in paths)
+            Console.WriteLine(path);
+    }
+
+    public void BTN_FlipCurrentLazerSkin(object sender, RoutedEventArgs args)
+    {
+        Lazer.FlipCurrentSkin();
     }
 }

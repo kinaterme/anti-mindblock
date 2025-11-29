@@ -15,6 +15,8 @@
                 <Button Click="BTN_FlipAsset">Flip image.png</Button>
                 <Button Click="BTN_FlipScreen">Flip screen</Button>
                 <Button Click="BTN_RevertScreen">Revert screen</Button>
+                <Button Click="BTN_PrintCurrentLazerSkinFilePaths">Print current skin's file paths</Button>
+                <Button Click="BTN_FlipCurrentLazerSkin">Flip current skin</Button>
             </StackPanel>
         </TabItem>
         <TabItem Header="stable">
