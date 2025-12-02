@@ -8,22 +8,32 @@
     <TabControl Margin="5">
         <TabItem Header="lazer">
             <StackPanel>
+                <Button Click="BTN_LazerFlipEverything">Flip everything</Button>
+                <Button Click="BTN_LazerRevertEverything">Revert everything</Button>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="stable">
+            <TextBlock Margin="5">stable tab</TextBlock>
+        </TabItem>
+        <TabItem Header="debug">
+            <StackPanel>
+                <Label>General:</Label>
+                <Button Click="BTN_FlipScreen">Flip screen</Button>
+                <Button Click="BTN_RevertScreen">Revert screen</Button>
+                <Label>Lazer:</Label>
                 <Button Click="BTN_GetCurrentLazerSkinID">Print current SkinID</Button>
                 <Button Click="BTN_GetLazerPath">Print lazer path</Button>
                 <Button Click="BTN_GetLazerSkins">Print all lazer skins</Button>
                 <Button Click="BTN_GetCurrentLazerSkinContents">Print current lazer skin contents</Button>
-                <Button Click="BTN_FlipAsset">Flip image.png</Button>
-                <Button Click="BTN_FlipScreen">Flip screen</Button>
-                <Button Click="BTN_RevertScreen">Revert screen</Button>
                 <Button Click="BTN_PrintCurrentLazerSkinFilePaths">Print current skin's file paths</Button>
                 <Button Click="BTN_FlipCurrentLazerSkin">Flip current skin</Button>
+                <Label>Stable:</Label>
+                <Label>Test button:</Label>
+                <Button Click="BTN_Test">Test button</Button>
             </StackPanel>
         </TabItem>
-        <TabItem Header="stable">
-            <TextBlock Margin="5">This is tab 2 content</TextBlock>
-        </TabItem>
-        <TabItem Header="Tab 3">
-            <TextBlock Margin="5">This is tab 3 content</TextBlock>
+        <TabItem Header="settings">
+            <TextBlock Margin="5">soon™</TextBlock>
         </TabItem>
     </TabControl>
 </Window>

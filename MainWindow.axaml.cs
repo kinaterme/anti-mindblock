@@ -15,7 +15,7 @@ public partial class MainWindow : Window
 
     public void BTN_GetCurrentLazerSkinID(object sender, RoutedEventArgs args)
     {
-        Guid currentSkinID = Lazer.GetCurrentSkin();
+        Guid currentSkinID = Lazer.GetCurrentSkinID();
         Console.WriteLine(currentSkinID);
     }
 
@@ -34,7 +34,7 @@ public partial class MainWindow : Window
 
     public void BTN_GetCurrentLazerSkinContents(object sender, RoutedEventArgs args)
     {
-        List<(string Filename, string? Hash)> currentSkin = Lazer.GetCurrentSkinContents();
+        List<(string Filename, string? Hash)> currentSkin = Lazer.GetCurrentSkinFiles();
         
         foreach (var file in currentSkin)
             Console.WriteLine($"{file.Filename} / {file.Hash}");
@@ -68,5 +68,28 @@ public partial class MainWindow : Window
     public void BTN_FlipCurrentLazerSkin(object sender, RoutedEventArgs args)
     {
         Lazer.FlipCurrentSkin();
+    }
+
+    public void BTN_LazerFlipEverything(object sender, RoutedEventArgs args)
+    {
+        Screen.Flip(true);
+        Lazer.FlipCurrentSkin();
+        Input.FlipTablet();
+        Screen.FocusOsuWindow();
+    }
+
+    public void BTN_LazerRevertEverything(object sender, RoutedEventArgs args)
+    {
+        Screen.Flip(false);
+        Lazer.FlipCurrentSkin();
+        Input.FlipTablet();
+        Screen.FocusOsuWindow();
+    }
+
+    public void BTN_Test(object sender, RoutedEventArgs args)
+    {
+        //Screen.FocusOsuWindow();
+        //Input.FlipTablet();
+        Lazer.ReloadSkin();
     }
 }

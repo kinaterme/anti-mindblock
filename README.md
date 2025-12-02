@@ -128,7 +128,7 @@ To compile Anti Mindblock from source, follow the steps below.
     - [ ] osu!(stable)
     - [X] osu!(lazer)
   - [ ] Input flipping
-  - [ ] Screen flipping
+  - [X] Screen flipping
 - [ ] macOS
   - [ ] Skin flipping
     - [X] osu!(lazer)
