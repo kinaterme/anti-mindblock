@@ -11,6 +11,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Settings.Initialize();
     }
 
     public void BTN_GetCurrentLazerSkinID(object sender, RoutedEventArgs args)
@@ -75,7 +76,8 @@ public partial class MainWindow : Window
         Screen.Flip(true);
         Lazer.FlipCurrentSkin();
         Input.FlipTablet();
-        Screen.FocusOsuWindow();
+        Lazer.ReloadSkin();
+        //Screen.FocusOsuWindow();
     }
 
     public void BTN_LazerRevertEverything(object sender, RoutedEventArgs args)
@@ -83,7 +85,8 @@ public partial class MainWindow : Window
         Screen.Flip(false);
         Lazer.FlipCurrentSkin();
         Input.FlipTablet();
-        Screen.FocusOsuWindow();
+        Lazer.ReloadSkin();
+        //Screen.FocusOsuWindow();
     }
 
     public void BTN_Test(object sender, RoutedEventArgs args)
@@ -91,5 +94,7 @@ public partial class MainWindow : Window
         //Screen.FocusOsuWindow();
         //Input.FlipTablet();
         Lazer.ReloadSkin();
+        Console.WriteLine($"Lazer path is {Lazer.GetLazerPath()}");
+        Console.WriteLine($"Lazer path is {Settings.OsuLazerPath} (settings)");
     }
 }

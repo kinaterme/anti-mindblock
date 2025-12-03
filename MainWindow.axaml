@@ -33,7 +33,15 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="settings">
-            <TextBlock Margin="5">soon™</TextBlock>
+            <StackPanel>
+                <TextBlock Margin="5">soon™</TextBlock>
+                <TextBlock Margin="5">lazer:</TextBlock>
+                <TextBlock Margin="5">choose between image recognition (less reliable, faster), game restart (safe, slow) and game restart .desktop (safe, slow, launches game with audio latency fixes) to reload lazer skin</TextBlock>
+                <TextBlock Margin="5">- choose .desktop file instead of automatic lazer executable path detection</TextBlock>
+                <TextBlock Margin="5">set lazer path</TextBlock>
+                <TextBlock Margin="5">general:</TextBlock>
+                <TextBlock Margin="5">hotkeys</TextBlock>
+            </StackPanel>
         </TabItem>
     </TabControl>
 </Window>
