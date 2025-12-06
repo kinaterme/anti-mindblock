@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using Avalonia.Controls;
 
 namespace antiMindblock
 {
@@ -28,6 +27,10 @@ namespace antiMindblock
 
         static void ReloadSkinSafely()
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                
+            }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 string lazerExecutablePath = "";
@@ -73,7 +76,12 @@ namespace antiMindblock
 
         static void ReloadSkinUsingDesktopFile()
         {
-            
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                
+            }
+            else
+                Console.WriteLine("not running on linux");
         }
 
         static void ReloadSkinImageRecognition()

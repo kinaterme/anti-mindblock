@@ -42,12 +42,12 @@
                         <ColumnDefinition Width="75*"></ColumnDefinition>
                         <ColumnDefinition Width="25*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) path"></TextBox>
-                    <Button Grid.Column="1" Margin="5,0">Browse</Button>
+                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) path" x:Name="TB_LazerPath"></TextBox>
+                    <Button Grid.Column="1" Margin="5,0" Click="BTN_PickLazerPath">Browse</Button>
                 </Grid>
                 <!--> osu!(lazer) skin reload setting <-->
                 <Label>lazer skin reload mode</Label>
-                <ComboBox SelectedIndex="0">
+                <ComboBox x:Name="CB_LazerReloadMode">
                     <ComboBoxItem>Game restart</ComboBoxItem>
                     <ComboBoxItem ToolTip.Tip="This option relaunches the game with any potential fixes the user applied in a .desktop file.">Game restart using .desktop file (Linux only)</ComboBoxItem>
                     <ComboBoxItem ToolTip.Tip="Reloads the skin by switching to another skin temporarily and then switching back using image recognition.">Image recognition</ComboBoxItem>
@@ -59,8 +59,8 @@
                         <ColumnDefinition Width="75*"></ColumnDefinition>
                         <ColumnDefinition Width="25*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) .desktop path"></TextBox>
-                    <Button Grid.Column="1" Margin="5,0">Browse</Button>
+                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) .desktop path" x:Name="TB_LazerDesktopPath"></TextBox>
+                    <Button Grid.Column="1" Margin="5,0" Click="BTN_PickLazerDesktopPath">Browse</Button>
                 </Grid>
                 <!--> hotkey settings <-->
                 <TextBlock Margin="5">hotkeys:</TextBlock>
@@ -88,6 +88,8 @@
                     <Label Grid.Row="3" Grid.Column="0" Margin="10,5">Hotkey name</Label>
                     <TextBox Grid.Row="3" Grid.Column="1" Watermark="Hotkey"></TextBox>
                 </Grid>
+                <Button Click="BTN_ApplySettings">Apply</Button>
+                <Button Click="BTN_RestoreDefaultSettings">Restore defaults</Button>
             </StackPanel>
         </TabItem>
     </TabControl>

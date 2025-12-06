@@ -8,15 +8,20 @@ namespace antiMindblock
     {
         private static readonly string Folder = GetSettingsFolder();
         private static readonly string FilePath = Path.Combine(Folder, "settings.ini");
-
+        
+        public static string OsuLazerPath = "";
+        public static string OsuLazerReloadMode = "";
+        public static string OsuLazerDesktopFilePath = "";
         public static void Initialize()
         {
             EnsureSettingsFile();
+            
+            OsuLazerPath = GetSettingValue("OsuLazerPath");
+            OsuLazerReloadMode = GetSettingValue("OsuLazerReloadMode"); // mode used for reloading the in-game skin - Restart, RestartDesktop, ImageRecognition
+            OsuLazerDesktopFilePath = GetSettingValue("OsuLazerDesktopFilePath"); // path to osu!(lazer) .desktop file
         }
 
-        public static string OsuLazerPath => GetSettingValue("OsuLazerPath");
-        public static string OsuLazerReloadMode => GetSettingValue("OsuLazerReloadMode"); // mode used for reloading the in-game skin - Restart, RestartDesktop, ImageRecognition
-        public static string OsuLazerDesktopFilePath => GetSettingValue("OsuLazerDesktopFilePath"); // path to osu!(lazer) .desktop file
+
 
         static string GetSettingsFolder()
         {
@@ -41,15 +46,30 @@ namespace antiMindblock
             }
         }
 
-        static void WriteDefaultSettings()
+        private static void WriteDefaultSettings()
+        {
+            OsuLazerPath = Lazer.GetDefaultLazerPath();
+            OsuLazerReloadMode = "Restart";
+            OsuLazerDesktopFilePath = "";
+            WriteSettingsFile();
+        }
+
+        public static void RestoreDefaultSettings()
+        {
+            OsuLazerPath = Lazer.GetDefaultLazerPath();
+            OsuLazerReloadMode = "Restart";
+            OsuLazerDesktopFilePath = "";
+        }
+
+        public static void WriteSettingsFile()
         {
             using (var sw = new StreamWriter(FilePath))
             {
                 sw.WriteLine("[Stable]");
                 sw.WriteLine("[Lazer]");
-                sw.WriteLine($"OsuLazerPath={Lazer.GetDefaultLazerPath()}");
-                sw.WriteLine($"OsuLazerReloadMode=Restart"); // Restart, RestartDesktop, ImageRecognition
-                sw.WriteLine($"OsuLazerDesktopFilePath=");
+                sw.WriteLine($"OsuLazerPath={OsuLazerPath}");
+                sw.WriteLine($"OsuLazerReloadMode={OsuLazerReloadMode}");
+                sw.WriteLine($"OsuLazerDesktopFilePath={OsuLazerDesktopFilePath}");
                 sw.Close();
             }
         }
