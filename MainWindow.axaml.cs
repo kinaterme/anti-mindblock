@@ -122,6 +122,12 @@ public partial class MainWindow : Window
         Screen.Flip(false);
     }
 
+    // This also reverts the tablet area back to normal if it's already flipped.
+    public void BTN_FlipTablet(object sender, RoutedEventArgs args)
+    {
+        Input.FlipTablet();
+    }
+
     public void BTN_PrintCurrentLazerSkinFilePaths(object sender, RoutedEventArgs args)
     {
         string[] paths = Lazer.GetCurrentSkinFilePaths();
@@ -152,12 +158,16 @@ public partial class MainWindow : Window
         //Screen.FocusOsuWindow();
     }
 
+    public void BTN_ReloadLazerSkin(object sender, RoutedEventArgs args)
+    {
+        Lazer.ReloadSkin();
+    }
     public void BTN_Test(object sender, RoutedEventArgs args)
     {
         //Screen.FocusOsuWindow();
         //Input.FlipTablet();
-        Lazer.ReloadSkin();
-        Console.WriteLine($"Lazer path is {Lazer.GetLazerPath()}");
-        Console.WriteLine($"Lazer path is {Settings.OsuLazerPath} (settings)");
+        //Lazer.ReloadSkin();
+        //Console.WriteLine($"Lazer path is {Lazer.GetLazerPath()}");
+        //Console.WriteLine($"Lazer path is {Settings.OsuLazerPath} (settings)");
     }
 }

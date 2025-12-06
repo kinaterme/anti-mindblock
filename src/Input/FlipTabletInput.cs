@@ -31,13 +31,13 @@ namespace antiMindblock
 
             if (tablet != null)
             {
-                int rotation = tablet["Rotation"]?.GetValue<int>() ?? 0;
+                double rotation = tablet["Rotation"]?.GetValue<double>() ?? 0.0;
                 switch (rotation)
                 {
-                    case 0:
+                    case 0.0:
                         tablet["Rotation"] = 180.0;
                         break;
-                    case 180:
+                    case 180.0:
                         tablet["Rotation"] = 0.0;
                         break;
                 }
