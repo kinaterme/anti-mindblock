@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="1500"
         x:Class="antiMindblock.MainWindow"
         Title="antiMindblock">
     <TabControl Margin="5">
@@ -34,13 +34,60 @@
         </TabItem>
         <TabItem Header="settings">
             <StackPanel>
-                <TextBlock Margin="5">soon™</TextBlock>
                 <TextBlock Margin="5">lazer:</TextBlock>
-                <TextBlock Margin="5">choose between image recognition (less reliable, faster), game restart (safe, slow) and game restart .desktop (safe, slow, launches game with audio latency fixes) to reload lazer skin</TextBlock>
-                <TextBlock Margin="5">- choose .desktop file instead of automatic lazer executable path detection</TextBlock>
-                <TextBlock Margin="5">set lazer path</TextBlock>
-                <TextBlock Margin="5">general:</TextBlock>
-                <TextBlock Margin="5">hotkeys</TextBlock>
+                <Label>lazer path</Label>
+                <!--> osu!(lazer) path setting <-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75*"></ColumnDefinition>
+                        <ColumnDefinition Width="25*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) path"></TextBox>
+                    <Button Grid.Column="1" Margin="5,0">Browse</Button>
+                </Grid>
+                <!--> osu!(lazer) skin reload setting <-->
+                <Label>lazer skin reload mode</Label>
+                <ComboBox SelectedIndex="0">
+                    <ComboBoxItem>Game restart</ComboBoxItem>
+                    <ComboBoxItem ToolTip.Tip="This option relaunches the game with any potential fixes the user applied in a .desktop file.">Game restart using .desktop file (Linux only)</ComboBoxItem>
+                    <ComboBoxItem ToolTip.Tip="Reloads the skin by switching to another skin temporarily and then switching back using image recognition.">Image recognition</ComboBoxItem>
+                </ComboBox>
+                <!--> osu!(lazer) .desktop path setting <-->
+                <Label>lazer .desktop file path (Linux only)</Label>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="75*"></ColumnDefinition>
+                        <ColumnDefinition Width="25*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Grid.Column="0" Watermark="Enter osu!(lazer) .desktop path"></TextBox>
+                    <Button Grid.Column="1" Margin="5,0">Browse</Button>
+                </Grid>
+                <!--> hotkey settings <-->
+                <TextBlock Margin="5">hotkeys:</TextBlock>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Label Grid.Row="0" Grid.Column="0" Margin="10,5">Hotkey name</Label>
+                    <TextBox Grid.Row="0" Grid.Column="1" Watermark="Hotkey"></TextBox>
+                    
+                    <Label Grid.Row="1" Grid.Column="0" Margin="10,5">Hotkey name</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" Watermark="Hotkey"></TextBox>
+                    
+                    <Label Grid.Row="2" Grid.Column="0" Margin="10,5">Hotkey name</Label>
+                    <TextBox Grid.Row="2" Grid.Column="1" Watermark="Hotkey"></TextBox>
+                    
+                    <Label Grid.Row="3" Grid.Column="0" Margin="10,5">Hotkey name</Label>
+                    <TextBox Grid.Row="3" Grid.Column="1" Watermark="Hotkey"></TextBox>
+                </Grid>
             </StackPanel>
         </TabItem>
     </TabControl>
