@@ -29,7 +29,26 @@ namespace antiMindblock
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                
+                string lazerExecutablePath = "";
+                foreach (var process in Process.GetProcesses())
+                {
+                    if (process.ProcessName.Contains("osu"))
+                    {
+                        lazerExecutablePath = process.MainModule?.FileName ?? "";
+                        Console.WriteLine($"Killing {process.ProcessName}");
+                        process.Kill();
+                        break;
+                    }
+                }
+
+                ProcessStartInfo startInfo = new ProcessStartInfo()
+                {
+                  FileName = lazerExecutablePath,
+                  UseShellExecute = false,
+                };
+                Console.WriteLine($"Launching {lazerExecutablePath}");
+                Process.Start(startInfo);
+
             }
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
@@ -81,7 +100,7 @@ namespace antiMindblock
                 
             }
             else
-                Console.WriteLine("not running on linux");
+                Console.WriteLine("not running linux");
         }
 
         static void ReloadSkinImageRecognition()

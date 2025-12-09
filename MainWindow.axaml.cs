@@ -66,7 +66,7 @@ public partial class MainWindow : Window
 
     public async void BTN_PickLazerDesktopPath(object sender, RoutedEventArgs args)
     {
-        string lazerDesktopPath = await OpenFolder();
+        string lazerDesktopPath = await OpenFile();
         Settings.OsuLazerDesktopFilePath = lazerDesktopPath;
         TB_LazerDesktopPath.Text = lazerDesktopPath;
     }
@@ -85,6 +85,20 @@ public partial class MainWindow : Window
         return "";
     }
     
+    private async Task<string> OpenFile()
+    {
+        var files = await this.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            AllowMultiple = false
+        });
+
+        if (files.Count > 0)
+        {
+            return files[0].Path.LocalPath;
+        }
+        return "";
+    }
+
     public void BTN_GetCurrentLazerSkinID(object sender, RoutedEventArgs args)
     {
         Guid currentSkinID = Lazer.GetCurrentSkinID();

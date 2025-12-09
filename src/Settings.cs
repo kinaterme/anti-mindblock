@@ -48,9 +48,7 @@ namespace antiMindblock
 
         private static void WriteDefaultSettings()
         {
-            OsuLazerPath = Lazer.GetDefaultLazerPath();
-            OsuLazerReloadMode = "Restart";
-            OsuLazerDesktopFilePath = "";
+            RestoreDefaultSettings();
             WriteSettingsFile();
         }
 
