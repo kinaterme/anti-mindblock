@@ -97,7 +97,32 @@ namespace antiMindblock
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                
+                if (!string.IsNullOrEmpty(Settings.OsuLazerDesktopFilePath))
+                {
+                    Console.WriteLine("path is not empty");
+                    string desktopPath = Settings.OsuLazerDesktopFilePath;
+                    string[] lines = System.IO.File.ReadAllLines(desktopPath);
+                    foreach (string line in lines)
+                    {
+                        if (line.ToLower().Contains("exec="))
+                        {
+                            string executablePath = line.Substring(5);
+                            Console.WriteLine(executablePath);
+                            Process.Start("killall", "osu!");
+
+                            ProcessStartInfo startInfo = new ProcessStartInfo()
+                            {
+                                FileName = "bash",
+                                Arguments = $"-c \"{executablePath}\"",
+                                UseShellExecute = true
+                            };
+                            Process.Start(startInfo);
+                            break;
+                        }
+                    }
+                }    
+                else
+                    Console.WriteLine("path is empty");
             }
             else
                 Console.WriteLine("not running linux");
